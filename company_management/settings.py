@@ -29,7 +29,6 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-AUTH_USER_MODEL = 'user_manage.AflUser'
 
 # Application definition
 
@@ -57,6 +56,7 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'company_management.urls'
+AUTH_USER_MODEL = 'user_manage.LoginUser'
 
 TEMPLATES = [
     {

@@ -5,7 +5,7 @@ from django.contrib.auth.models import (
 import os
 from django.conf import settings
 from django.utils import timezone
-from django.contrib.postgres.fields import JSONField
+# from django.contrib.postgres.fields import JSONField
 # Create your models here.
 
 
