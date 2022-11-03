@@ -5,6 +5,7 @@ from django.contrib.auth.models import (
 import os
 from django.conf import settings
 from django.utils import timezone
+# from phonenumber_field.modelfields import PhoneNumberField
 # from django.contrib.postgres.fields import JSONField
 # Create your models here.
 
@@ -59,8 +60,6 @@ class DTUserManager(BaseUserManager):
         return self.get(**{case_insensitive_username_field: username})
 
 
-
-
 class LoginUser(AbstractBaseUser,PermissionsMixin):
     email = models.EmailField(
         verbose_name='email address',
@@ -73,14 +72,14 @@ class LoginUser(AbstractBaseUser,PermissionsMixin):
     first_name = models.CharField(max_length=255, null=False,default='')
     last_name = models.CharField(max_length=255, null=False,default='')
     country_code = models.CharField(max_length=5, null=True,default='')
-    is_staff = models.BooleanField(default=True)
+    is_staff = models.BooleanField(default=False,null=True)
     is_active = models.BooleanField(default=True)
     is_admin = models.BooleanField(default=False)
     is_superuser = models.BooleanField(default=False)
     is_company = models.BooleanField(default=False)
     is_manager = models.BooleanField(default=False)
     phone_code = models.CharField(max_length=4, blank=True,null=True)
-    phone_number = models.CharField(max_length=17, blank=True,null=True)
+    phone_number = models.CharField(null=False, blank=False, unique=True,max_length=100)
     created = models.DateTimeField(default=timezone.now)
    
     expiry_date = models.DateField(blank=True, null=True)
@@ -90,7 +89,6 @@ class LoginUser(AbstractBaseUser,PermissionsMixin):
     
     USERNAME_FIELD = 'username'
     REQUIRED_FIELDS = ['email','phone_number']
-    is_staff = models.BooleanField(default=False,null=True)
 
     def __str__(self):
         return self.username
