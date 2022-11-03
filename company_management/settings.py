@@ -134,6 +134,10 @@ STATICFILES_DIRS = [
 ]
 MEDIA_ROOT = os.path.join(BASE_DIR,'staticfiles')
 
+MEDIAFILES_DIRS = (
+        os.path.join(BASE_DIR, 'media'),
+)
+
 REST_FRAMEWORK = {
     # Use Django's standard `django.contrib.auth` permissions,
     # or allow read-only access for unauthenticated users.
@@ -145,6 +149,7 @@ REST_FRAMEWORK = {
     ],
 
 }
+
 DISABLE_COLLECTSTATIC=1
 
 EMAIL_CONFIG = "smtp://user@:password@localhost:25"
