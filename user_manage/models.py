@@ -2,7 +2,6 @@ from django.db import models
 from django.contrib.auth.models import (
     BaseUserManager, AbstractBaseUser,PermissionsMixin,Group
 )
-import os
 from django.conf import settings
 from django.utils import timezone
 # from phonenumber_field.modelfields import PhoneNumberField
@@ -85,6 +84,8 @@ class LoginUser(AbstractBaseUser,PermissionsMixin):
     expiry_date = models.DateField(blank=True, null=True)
     is_eligible = models.SmallIntegerField(default=1,blank = True,null=True)
 
+    documents = models.JSONField(default=dict,blank=True)
+    
     objects = DTUserManager()
     
     USERNAME_FIELD = 'username'
@@ -92,3 +93,11 @@ class LoginUser(AbstractBaseUser,PermissionsMixin):
 
     def __str__(self):
         return self.username
+
+class ManagerCompany(models.Model):
+    manager = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='manager',blank=True,null=True)
+    company = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='company',blank=True,null=True)
+    is_active = models.BooleanField(default=True)
+    is_delete = models.BooleanField(default=False)
+    company_name = models.CharField(max_length=255, null=False,default='')
+    modified = models.DateTimeField(default=timezone.now)

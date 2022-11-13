@@ -8,7 +8,7 @@ https://docs.djangoproject.com/en/2.2/topics/settings/
 
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/2.2/ref/settings/
-"""
+""" 
 
 import os
 from django.utils.translation import gettext_lazy as _
@@ -16,6 +16,20 @@ from django.utils.translation import gettext_lazy as _
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
+SITE_HOST = "127.0.0.1:8000"
+SITE_URL_HTTP = 'http://{}'.format(SITE_HOST)
+SITE_URL_HTTPS = 'https://{}'.format(SITE_HOST)
+USE_SSL = False
+if USE_SSL:
+    DEFAULT_SITE_URL = SITE_URL_HTTPS
+    SECURE_SSL_REDIRECT = False
+    SESSION_COOKIE_SECURE=True
+    SECURE_HSTS_SECONDS = 31536000 #1 year, is common
+    SECURE_REDIRECT_EXEMPT = [r'^no-ssl/$']
+    SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+    SECURE_PROXY_SSL_HEADER = ('HTTP_X_SCHEME', 'https')
+else:
+   DEFAULT_SITE_URL = SITE_URL_HTTP
 
 
 # Quick-start development settings - unsuitable for production
@@ -45,10 +59,14 @@ INSTALLED_APPS = [
     'user_manage',
     'dtuser_auth',
     'phonenumber_field',
+    # 'payment',
+    'corsheaders', #registers corheaders as dependency
+    'company_app',
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    "corsheaders.middleware.CorsMiddleware", #to listen in on responses
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -126,14 +144,15 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
+
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR,'staticfiles')
-MEDIA_URL = '/images/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR,'static')
 ]
-MEDIA_ROOT = os.path.join(BASE_DIR,'staticfiles')
 
+MEDIA_URL = '/images/'
+MEDIA_ROOT  = os.path.join(BASE_DIR, 'mediafiles')
 MEDIAFILES_DIRS = (
         os.path.join(BASE_DIR, 'media'),
 )
@@ -144,7 +163,7 @@ REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
     ],
-    'DEFAULT_AUTHENTICATION_CLASSES': [
+    'DEFAULT_AUTHENTICATION_CLunauthenticatedASSES': [
         'rest_framework.authentication.TokenAuthentication',  # <-- And here
     ],
 
@@ -154,3 +173,24 @@ DISABLE_COLLECTSTATIC=1
 
 EMAIL_CONFIG = "smtp://user@:password@localhost:25"
 
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",
+    "http://127.0.0.1:3000",
+]
+
+RAZOR_KEY_ID = "YOUR_KEY_ID"
+RAZOR_KEY_SECRET = "YOUR_KEY_SECRET"
+
+ADMIN_USER_ID = 1
+
+STATIC_URL = f'{DEFAULT_SITE_URL}/static/'
+MEDIA_URL = f'{DEFAULT_SITE_URL}/media/'
+COMPRESS_ENABLED = False
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_USE_TLS = True
+EMAIL_PORT = 587
+EMAIL_HOST = 'smtp.office365.com'
+EMAIL_HOST_USER = ''
+EMAIL_HOST_PASSWORD = ''
+DEFAULT_TO_EMAIL = ''

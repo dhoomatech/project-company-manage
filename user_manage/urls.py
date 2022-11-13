@@ -1,8 +1,17 @@
 from django.urls import path
-from .views import CustomAuthToken,AccountLogin
+from .views import *
 
 urlpatterns = [
     path('api-token-auth/', CustomAuthToken.as_view()),
     path('account-login', AccountLogin.as_view()),
+    path('admin-account-login', AdminAccountLogin.as_view()),
+    path('create-manager', CreateManagerAccount.as_view()),
+    path('create-company', CreateCompanyAccount.as_view()),
+
+    path('admin-company-list', AdminCompanyList.as_view()),
+    path('admin-manager-list', AdminManagerList.as_view()),
+
+    path('company-list', CompanyList.as_view()),
+
     # path('account-login-verify/<str:user_type>', CustomAuthToken.as_view()),
 ]
