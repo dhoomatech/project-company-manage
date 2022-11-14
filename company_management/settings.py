@@ -16,7 +16,7 @@ from django.utils.translation import gettext_lazy as _
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-SITE_HOST = "127.0.0.1:8000"
+SITE_HOST = "15.207.233.212:8001"
 SITE_URL_HTTP = 'http://{}'.format(SITE_HOST)
 SITE_URL_HTTPS = 'https://{}'.format(SITE_HOST)
 USE_SSL = False
