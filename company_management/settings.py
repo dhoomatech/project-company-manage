@@ -194,8 +194,8 @@ RAZOR_KEY_SECRET = "YOUR_KEY_SECRET"
 
 ADMIN_USER_ID = 1
 
-STATIC_URL = f'{DEFAULT_SITE_URL}/static/'
-MEDIA_URL = f'{DEFAULT_SITE_URL}/media/'
+STATIC_URL = f'{DEFAULT_SITE_URL}/staticfiles/'
+MEDIA_URL = f'{DEFAULT_SITE_URL}/mediafiles/'
 COMPRESS_ENABLED = False
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
