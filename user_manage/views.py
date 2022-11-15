@@ -56,11 +56,14 @@ class AccountLogin(APIView):
                         "company":user_obj.is_company,
                         "manager":user_obj.is_manager,
                     }})
+                else:
+                    return Response({"status":status.HTTP_201_CREATED,"message":"Please enter a valid OTP."})
                 
             else:
                 auth_key = UserAuthKey()
                 auth_key.generate_token(user_name)
                 return Response({"status":status.HTTP_201_CREATED,"message":"OTP succcessfully send.","data":auth_key.code})
+            
             
         except Exception as e:
             # traceback.print_exc()
