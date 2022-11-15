@@ -111,6 +111,7 @@ class CreateManagerAccount(APIView):
                     return Response({"status":status.HTTP_400_BAD_REQUEST,"message":key+" Missing. Please add required keys"})
             
             user_obj = LoginUser()
+            user_obj.username = post_data['phone']
             user_obj.first_name = post_data['name']
             user_obj.last_name = post_data['company_name']
             user_obj.email = post_data['email']
