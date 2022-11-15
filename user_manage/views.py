@@ -62,9 +62,9 @@ class AccountLogin(APIView):
                 auth_key.generate_token(user_name)
                 return Response({"status":status.HTTP_201_CREATED,"message":"OTP succcessfully send.","data":auth_key.code})
             
-        except:
-            traceback.print_exc()
-            return Response({"status":status.HTTP_400_BAD_REQUEST,"message":"Please try again latter."})
+        except Exception as e:
+            # traceback.print_exc()
+            return Response({"status":status.HTTP_400_BAD_REQUEST,"message":str(e)})
 
 class AdminAccountLogin(APIView):
     permission_classes = [AllowAny]
@@ -118,9 +118,9 @@ class CreateManagerAccount(APIView):
             user_obj.is_manager = True
             user_obj.save()
 
-        except:
+        except Exception as e:
             traceback.print_exc()
-            return Response({"status":status.HTTP_400_BAD_REQUEST,"message":"Please try again latter."})
+            return Response({"status":status.HTTP_400_BAD_REQUEST,"message":str(e)})
     
     def check_mail(self,email):
         import re
