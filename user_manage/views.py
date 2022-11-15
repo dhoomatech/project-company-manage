@@ -116,6 +116,7 @@ class CreateManagerAccount(APIView):
             user_obj.last_name = post_data['company_name']
             user_obj.email = post_data['email']
             user_obj.phone_number = post_data['phone']
+            user_obj.password = post_data['phone']
             user_obj.is_manager = True
             user_obj.save()
 
