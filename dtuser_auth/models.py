@@ -24,9 +24,9 @@ class UserAuthKey(models.Model):
 		expire_time = timezone.now
 		token_obj  = UserAuthKey.objects.filter(user_name=user_name,is_read=False,code=otp).first()
 		if token_obj:
-			token_obj.is_read = True
+			# token_obj.is_read = True
 			token_obj.save()
-			self.clean_expired_key()
+			# self.clean_expired_key()
 			return True
 		return False
 	

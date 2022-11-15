@@ -45,9 +45,9 @@ class AccountLogin(APIView):
             if "otp" in post_data:
                 auth_check = UserAuthKey()
                 if auth_check.validate_key(user_name,post_data['otp']):
-                    token, created = Token.objects.get_or_create(user=user_obj)
+                    token, _ = Token.objects.get_or_create(user=user_obj)
                     return Response({"status":status.HTTP_201_CREATED,"message":"Login Successfull.","data":{
-                        "token":token,
+                        "token":token.key,
                         "first_name":user_obj.first_name,
                         "last_name":user_obj.last_name,
                         "phone_code":user_obj.phone_code,
@@ -66,7 +66,7 @@ class AccountLogin(APIView):
             
             
         except Exception as e:
-            # traceback.print_exc()
+            traceback.print_exc()
             return Response({"status":status.HTTP_400_BAD_REQUEST,"message":str(e)})
 
 class AdminAccountLogin(APIView):
