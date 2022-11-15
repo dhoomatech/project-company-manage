@@ -155,17 +155,18 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 
-STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR,'static')
-]
+STATIC_URL = f'{DEFAULT_SITE_URL}/static/'
+MEDIA_URL = f'{DEFAULT_SITE_URL}/media/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+# STATICFILES_DIRS = [
+#     os.path.join(BASE_DIR,'static')
+# ]
 
-MEDIA_URL = '/images/'
-MEDIA_ROOT  = os.path.join(BASE_DIR, 'mediafiles')
-MEDIAFILES_DIRS = (
-        os.path.join(BASE_DIR, 'media'),
-)
+# MEDIA_URL = '/media/'
+MEDIA_ROOT  = os.path.join(BASE_DIR, 'media')
+# MEDIAFILES_DIRS = (
+#         os.path.join(BASE_DIR, 'media'),
+# )
 
 REST_FRAMEWORK = {
     # Use Django's standard `django.contrib.auth` permissions,
