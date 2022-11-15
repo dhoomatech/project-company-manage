@@ -30,7 +30,7 @@ class DTUserManager(BaseUserManager):
 
 
     # def create_superuser(self, email,username, date_of_birth, password, **extra_fields):
-    def create_superuser(self, email,username, password, **extra_fields):
+    def create_superuser(self, email,username, password, phone_number, **extra_fields):
         """
         Creates and saves a superuser with the given email, date of
         birth and password.
@@ -39,6 +39,7 @@ class DTUserManager(BaseUserManager):
             email = email,
             username = username,
             password=password,
+            phone_number=phone_number,
         )
         extra_fields.setdefault('is_staff', True)
         extra_fields.setdefault('is_superuser', True)
