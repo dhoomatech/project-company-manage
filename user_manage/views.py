@@ -225,9 +225,9 @@ class CompanyList(generics.ListCreateAPIView):
     permission_classes = [IsAuthenticated]
     def get(self, request, *args, **kwargs):
         try:
-
+            print(request.user.__dict__)
             if request.user.is_manager:
-                self.queryset = self.queryset.filter(company=request.user,is_active=True)
+                self.queryset = self.queryset.filter(manager=request.user,is_active=True)
             else:
                 self.queryset = LoginUser.objects.none()
 

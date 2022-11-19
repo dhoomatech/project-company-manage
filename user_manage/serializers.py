@@ -16,7 +16,7 @@ class CompanySerializer(serializers.ModelSerializer):
     company_phone_number = serializers.SerializerMethodField('get_company_phone_number')
     class Meta:
         model = ManagerCompany
-        fields = ['id', 'company_name', 'company_email', 'company_phone_code','company_phone_number']
+        fields = ['id', 'company_fname','company_lname', 'company_email', 'company_phone_code','company_phone_number']
 
     def get_company_fname(self, obj):
         return obj.company.first_name
