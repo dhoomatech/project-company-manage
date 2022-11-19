@@ -39,7 +39,7 @@ class AccountLogin(APIView):
             
             user_name = post_data['user_name']
             user_obj = LoginUser.objects.filter(Q(email=user_name) | Q(username=user_name) | Q(phone_number=user_name)).first()
-            if user_obj and user_obj.is_active == False or user_obj.is_manager == False and user_obj.is_company == False:
+            if user_obj and user_obj.is_active == False or user_obj and user_obj.is_manager == False and user_obj.is_company == False:
                 return Response({"status":"400","message":"You are not a active user."})
             
             if "otp" in post_data:
@@ -57,7 +57,7 @@ class AccountLogin(APIView):
                         "manager":user_obj.is_manager,
                     }})
                 else:
-                    return Response({"status":status.HTTP_201_CREATED,"message":"Please enter a valid OTP."})
+                    return Response({"status":status.HTTP_400_BAD_REQUEST,"message":"Please enter a valid OTP."})
                 
             else:
                 auth_key = UserAuthKey()
@@ -157,6 +157,7 @@ class CreateCompanyAccount(APIView):
             mapper.company = company_obj
             mapper.company_name = post_data['company_name']
 
+            return Response({"status":200,"message":"Account Created."})
         except:
             traceback.print_exc()
             return Response({"status":status.HTTP_400_BAD_REQUEST,"message":"Please try again latter."})
@@ -188,7 +189,7 @@ class AdminCompanyList(generics.ListCreateAPIView):
             else:
                 self.queryset = LoginUser.objects.none()
             res_data = super().get(self, request, *args, **kwargs)
-            return Response({"status":status.HTTP_400_BAD_REQUEST,"message":"Company List.",'data':res_data.data})
+            return Response({"status":200,"message":"Company List.",'data':res_data.data})
         except:
             # traceback.print_exc()
             return Response({"status":status.HTTP_400_BAD_REQUEST,"message":"Please try again latter."})
@@ -204,7 +205,7 @@ class AdminManagerList(generics.ListCreateAPIView):
             else:
                 self.queryset = LoginUser.objects.none()
             res_data = super().get(self, request, *args, **kwargs)
-            return Response({"status":status.HTTP_400_BAD_REQUEST,"message":"Manager List.",'data':res_data.data})
+            return Response({"status":200,"message":"Manager List.",'data':res_data.data})
         except:
             traceback.print_exc()
             return Response({"status":status.HTTP_400_BAD_REQUEST,"message":"Please try again latter."})
@@ -221,7 +222,7 @@ class CompanyList(generics.ListCreateAPIView):
             else:
                 self.queryset = LoginUser.objects.none()
             res_data = super().get(self, request, *args, **kwargs)
-            return Response({"status":status.HTTP_400_BAD_REQUEST,"message":"Company list.",'data':res_data.data})
+            return Response({"status":200,"message":"Company list.",'data':res_data.data})
         except:
             traceback.print_exc()
             return Response({"status":status.HTTP_400_BAD_REQUEST,"message":"Please try again latter."})
