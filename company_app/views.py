@@ -57,12 +57,12 @@ class ServicesRequestsCreate(APIView):
         try:
             user_obj = request.user
             post_data = request.data
-            if request.data.is_company:
+            if user_obj.is_company:
                 report_obj = ManagerCompany.objects.filter(company=user_obj).first()
                 report_user = report_obj.manager
                 request_type = 'company_request'
                 pass
-            if request.data.is_manager:
+            if user_obj.is_manager:
                 request_type = 'manager_request'
                 report_user = LoginUser.objects.filter(id=settings.ADMIN_USER_ID).first()
                 pass
@@ -86,7 +86,7 @@ class ServicesRequestsCreate(APIView):
                 return Response({
                     'status':"failed",
                     'message': "You can't process now.",
-                    'response_code': status.HTTP_200_OK,
+                    'response_code': 400,
                 })
 
         except Exception as e:

@@ -62,6 +62,7 @@ INSTALLED_APPS = [
     # 'payment',
     'corsheaders', #registers corheaders as dependency
     'company_app',
+    'django_twilio',
 ]
 
 MIDDLEWARE = [
@@ -218,3 +219,8 @@ EMAIL_HOST = 'smtp.office365.com'
 EMAIL_HOST_USER = ''
 EMAIL_HOST_PASSWORD = ''
 DEFAULT_TO_EMAIL = ''
+
+
+TWILIO_ACCOUNT_SID = 'AC48fe8f20b2328ba4076368794fe7c766'
+TWILIO_AUTH_TOKEN = '8dc3d65247ebc9dbfdd4dd23bad33741'
+DJANGO_TWILIO_BLACKLIST_CHECK = True
