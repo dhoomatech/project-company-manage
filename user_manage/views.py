@@ -38,7 +38,7 @@ class AccountLogin(APIView):
                 return Response({"status":status.HTTP_400_BAD_REQUEST,"message":"User name key missing."})
             
             user_name = post_data['user_name']
-            user_obj = LoginUser.objects.filter(Q(email=user_name) | Q(username=user_name) | Q(phone_number=user_name)).first()
+            user_obj = LoginUser.objects.filter(Q(email=user_name) | Q(phone_number=user_name)).first()
             if user_obj and user_obj.is_active == False or user_obj and user_obj.is_manager == False and user_obj.is_company == False:
                 return Response({"status":"400","message":"You are not a active user."})
             
@@ -226,10 +226,12 @@ class CompanyList(generics.ListCreateAPIView):
     permission_classes = [IsAuthenticated]
     def get(self, request, *args, **kwargs):
         try:
+            
             if request.user.is_manager:
                 self.queryset = self.queryset.filter(company=request.user,is_active=True)
             else:
                 self.queryset = LoginUser.objects.none()
+
             res_data = super().get(self, request, *args, **kwargs)
             return Response({"status":200,"message":"Company list.",'data':res_data.data})
         except:

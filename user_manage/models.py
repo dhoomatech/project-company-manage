@@ -91,8 +91,6 @@ class LoginUser(AbstractBaseUser,PermissionsMixin):
     USERNAME_FIELD = 'phone_number'
     REQUIRED_FIELDS = ['email']
 
-    def __str__(self):
-        return self.username
 
 class ManagerCompany(models.Model):
     manager = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='manager',blank=True,null=True)
