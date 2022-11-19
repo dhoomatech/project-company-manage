@@ -99,3 +99,4 @@ class ManagerCompany(models.Model):
     is_delete = models.BooleanField(default=False)
     company_name = models.CharField(max_length=255, null=False,default='')
     modified = models.DateTimeField(default=timezone.now)
+

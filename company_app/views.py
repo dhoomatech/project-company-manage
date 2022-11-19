@@ -68,13 +68,13 @@ class ServicesRequestsCreate(APIView):
                 pass
             if report_user:
                 service_obj = ServicesRequests()
-                service_obj['tittle'] = post_data['tittle']
-                service_obj['paid_amount'] = post_data['paid_amount'] if 'paid_amount' in post_data else ''
-                service_obj['discription'] = post_data['discription'] if 'discription' in post_data else ''
-                service_obj['documents'] = post_data['documents'] if 'documents' in post_data else ''
-                service_obj['approval_user'] = report_user
-                service_obj['request_user'] = user_obj
-                service_obj['request_type'] = request_type
+                service_obj.tittle = post_data['tittle']
+                service_obj.paid_amount = post_data['paid_amount'] if 'paid_amount' in post_data else ''
+                service_obj.discription = post_data['discription'] if 'discription' in post_data else ''
+                service_obj.documents = post_data['documents'] if 'documents' in post_data else ''
+                service_obj.approval_user = report_user
+                service_obj.request_user = user_obj
+                service_obj.request_type = request_type
                 service_obj.save()
 
                 return Response({
@@ -90,6 +90,7 @@ class ServicesRequestsCreate(APIView):
                 })
 
         except Exception as e:
+            traceback.print_exc()
             message = str(e)     
             return Response({'status':'error','response_code':500,"message":message})
 
