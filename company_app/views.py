@@ -64,7 +64,7 @@ class ServicesRequestsCreate(APIView):
                 pass
             if user_obj.is_manager:
                 request_type = 'manager_request'
-                report_user = LoginUser.objects.filter(id=settings.ADMIN_USER_ID).first()
+                report_user = LoginUser.objects.filter(is_superuser=True).first()
                 pass
             if report_user:
                 service_obj = ServicesRequests()
