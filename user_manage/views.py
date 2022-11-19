@@ -137,13 +137,12 @@ class CreateManagerAccount(APIView):
             return False
 
 class CreateCompanyAccount(APIView):
-    permission_classes = [AllowAny]
+    permission_classes = [IsAuthenticated]
     def post(self, request, *args, **kwargs):
         try:
 
             post_data = request.data
-            manager_id = post_data['manager_id']
-            user_obj = LoginUser.objects.filter(id=manager_id).first()
+            user_obj = request.user
             if not user_obj:
                 return Response({"status":400,"message":"Not a valid manager."})
 
@@ -226,7 +225,7 @@ class CompanyList(generics.ListCreateAPIView):
     permission_classes = [IsAuthenticated]
     def get(self, request, *args, **kwargs):
         try:
-            
+
             if request.user.is_manager:
                 self.queryset = self.queryset.filter(company=request.user,is_active=True)
             else:
