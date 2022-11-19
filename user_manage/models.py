@@ -67,9 +67,7 @@ class LoginUser(AbstractBaseUser,PermissionsMixin):
         max_length=255
     )
     
-    username = models.CharField(verbose_name='Username',
-        max_length=255,
-        unique=True,default='')
+    # username = models.CharField(verbose_name='Username',default='')
     first_name = models.CharField(max_length=255, null=False,default='')
     last_name = models.CharField(max_length=255, null=False,default='')
     country_code = models.CharField(max_length=5, null=True,default='')
@@ -90,8 +88,8 @@ class LoginUser(AbstractBaseUser,PermissionsMixin):
     
     objects = DTUserManager()
     
-    USERNAME_FIELD = 'username'
-    REQUIRED_FIELDS = ['email','phone_number']
+    USERNAME_FIELD = 'phone_number'
+    REQUIRED_FIELDS = ['email']
 
     def __str__(self):
         return self.username

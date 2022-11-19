@@ -137,12 +137,20 @@ class CreateManagerAccount(APIView):
             return False
 
 class CreateCompanyAccount(APIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [AllowAny]
     def post(self, request, *args, **kwargs):
         try:
-            user_obj = request.user
-            post_data = request.data
 
+            post_data = request.data
+            manager_id = post_data['manager_id']
+            user_obj = LoginUser.objects.filter(id=manager_id).first()
+            if not user_obj:
+                return Response({"status":400,"message":"Not a valid manager."})
+
+            user_obj_exist = LoginUser.objects.filter(Q(phone_number=post_data['phone']) | Q(email=post_data['email'])).first()
+            if user_obj_exist:
+                return Response({"status":400,"message":"Phone number or email already registerd."})
+            
             company_obj = LoginUser()
             company_obj.first_name = post_data['name'] if 'name' in post_data else ""
             company_obj.last_name = post_data['company_name']
@@ -156,6 +164,7 @@ class CreateCompanyAccount(APIView):
             mapper.manager = user_obj
             mapper.company = company_obj
             mapper.company_name = post_data['company_name']
+            mapper.save()
 
             return Response({"status":200,"message":"Account Created."})
         except:
