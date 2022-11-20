@@ -36,13 +36,13 @@ class CompanySerializer(serializers.ModelSerializer):
 
 
 class EmployeeDetailsSerializer(serializers.ModelSerializer):
-    documents = serializers.SerializerMethodField('get_documents')
+    # documents = serializers.SerializerMethodField('get_documents')
     class Meta:
         model = EmployeeDetails
         fields = "__all__"
 
-    def get_documents(self, obj):
-        if obj.documents:
-            return image_url_mapping(obj.documents)
-        else:
-            return []
+    # def get_documents(self, obj):
+    #     if obj.documents:
+    #         return image_url_mapping(obj.documents)
+    #     else:
+    #         return []
