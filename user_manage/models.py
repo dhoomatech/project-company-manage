@@ -108,3 +108,4 @@ class EmployeeDetails(models.Model):
     l_name = models.CharField(max_length=255, null=False,default='')
     description = models.CharField(max_length=255, null=False,default='')
     modified = models.DateTimeField(default=timezone.now)
+    documents = models.JSONField(default=dict,blank=True)

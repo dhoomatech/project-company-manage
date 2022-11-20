@@ -253,6 +253,7 @@ class CreateEmployee(APIView):
             company_obj.f_name = post_data['f_name']
             company_obj.l_name = post_data['l_name']
             company_obj.description = post_data['description']
+            company_obj.documents = post_data['documents'] if "documents" in post_data else []
             company_obj.save()
 
             return Response({"status":200,"message":"Account Created."})
