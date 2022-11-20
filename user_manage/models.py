@@ -98,3 +98,13 @@ class ManagerCompany(models.Model):
     company_name = models.CharField(max_length=255, null=False,default='')
     modified = models.DateTimeField(default=timezone.now)
 
+
+class EmployeeDetails(models.Model):
+    company = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='emp_company',blank=True,null=True)
+    is_active = models.BooleanField(default=True)
+    is_delete = models.BooleanField(default=False)
+    code = models.CharField(max_length=255, null=False,default='')
+    f_name = models.CharField(max_length=255, null=False,default='')
+    l_name = models.CharField(max_length=255, null=False,default='')
+    description = models.CharField(max_length=255, null=False,default='')
+    modified = models.DateTimeField(default=timezone.now)

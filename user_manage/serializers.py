@@ -32,3 +32,9 @@ class CompanySerializer(serializers.ModelSerializer):
     
     def get_company_phone_number(self, obj):
         return obj.company.phone_number
+
+
+class EmployeeDetailsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = EmployeeDetails
+        fields = "__all__"

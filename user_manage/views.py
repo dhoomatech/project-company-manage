@@ -178,7 +178,7 @@ class CreateCompanyAccount(APIView):
             if company_id:
                 company = ManagerCompany.objects.filter(manager=user_obj,id=company_id).first()
                 company.is_delete = True
-                company.is_active = True
+                company.is_active = False
                 company.save()
         except:
             traceback.print_exc()
@@ -225,7 +225,6 @@ class CompanyList(generics.ListCreateAPIView):
     permission_classes = [IsAuthenticated]
     def get(self, request, *args, **kwargs):
         try:
-            print(request.user.__dict__)
             if request.user.is_manager:
                 self.queryset = self.queryset.filter(manager=request.user,is_active=True)
             else:
@@ -237,3 +236,61 @@ class CompanyList(generics.ListCreateAPIView):
             traceback.print_exc()
             return Response({"status":status.HTTP_400_BAD_REQUEST,"message":"Please try again latter."})
 
+
+class CreateEmployee(APIView):
+    permission_classes = [IsAuthenticated]
+    def post(self, request, *args, **kwargs):
+        try:
+
+            post_data = request.data
+            user_obj = request.user
+            if not request.user.is_company:
+                return Response({"status":400,"message":"You cant create employees."})
+            
+            company_obj = EmployeeDetails()
+            company_obj.company = user_obj
+            company_obj.code = post_data['code']
+            company_obj.f_name = post_data['f_name']
+            company_obj.l_name = post_data['l_name']
+            company_obj.description = post_data['description']
+            company_obj.save()
+
+            return Response({"status":200,"message":"Account Created."})
+        except:
+            traceback.print_exc()
+            return Response({"status":status.HTTP_400_BAD_REQUEST,"message":"Please try again latter."})
+    
+    def delete(self, request, *args, **kwargs):
+        try:
+            user_obj = request.user
+            post_data = request.data
+            if not request.user.is_company:
+                return Response({"status":400,"message":"You cant create employees."})
+
+            employee_id = post_data["employee_id"] if "employee_id" in post_data else None
+            if employee_id:
+                company = EmployeeDetails.objects.filter(company=user_obj,id=employee_id).first()
+                company.is_delete = True
+                company.is_active = False
+                company.save()
+        except:
+            traceback.print_exc()
+            return Response({"status":status.HTTP_400_BAD_REQUEST,"message":"Please try again latter."})
+
+
+class EmployeeList(generics.ListCreateAPIView):
+    queryset = EmployeeDetails.objects.all()
+    serializer_class = EmployeeDetailsSerializer
+    permission_classes = [IsAuthenticated]
+    def get(self, request, *args, **kwargs):
+        try:
+            if request.user.is_company:
+                self.queryset = self.queryset.filter(manager=request.user,is_active=True)
+            else:
+                self.queryset = LoginUser.objects.none()
+
+            res_data = super().get(self, request, *args, **kwargs)
+            return Response({"status":200,"message":"Employee list.",'data':res_data.data})
+        except:
+            traceback.print_exc()
+            return Response({"status":status.HTTP_400_BAD_REQUEST,"message":"Please try again latter."})
