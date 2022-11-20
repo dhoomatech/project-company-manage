@@ -208,8 +208,13 @@ class AdminManagerList(generics.ListCreateAPIView):
     permission_classes = [IsAuthenticated]
     def get(self, request, *args, **kwargs):
         try:
+            status = self.request.query_params.get('status',None)
             if request.user.is_admin:
                 self.queryset = self.queryset.filter(is_manager=True)
+                if status == "expired":
+                    self.queryset = self.queryset.filter(is_active=False)
+                else:
+                    self.queryset = self.queryset.filter(is_active=True)
             else:
                 self.queryset = LoginUser.objects.none()
             res_data = super().get(self, request, *args, **kwargs)
@@ -286,9 +291,12 @@ class EmployeeList(generics.ListCreateAPIView):
     def get(self, request, *args, **kwargs):
         try:
             if request.user.is_company:
-                self.queryset = self.queryset.filter(manager=request.user,is_active=True)
+                self.queryset = self.queryset.filter(company=request.user,is_active=True)
+            elif request.user.is_manager:
+                self.queryset = self.queryset.filter(company__id__in=list(ManagerCompany.objects.filter(manager=request.user).values_list('company').all()),is_active=True)
+                pass
             else:
-                self.queryset = LoginUser.objects.none()
+                self.queryset = EmployeeDetails.objects.none()
 
             res_data = super().get(self, request, *args, **kwargs)
             return Response({"status":200,"message":"Employee list.",'data':res_data.data})

@@ -62,7 +62,7 @@ INSTALLED_APPS = [
     # 'payment',
     'corsheaders', #registers corheaders as dependency
     'company_app',
-    # 'django_twilio',s
+    # 'django_twilio',
 ]
 
 MIDDLEWARE = [

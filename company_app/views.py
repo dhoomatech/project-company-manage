@@ -11,6 +11,7 @@ from django.conf import settings
 from .models import FileManager,ServicesRequests
 from .serializers import *
 from user_manage.models import ManagerCompany,LoginUser
+
 # Create your views here.
 
 
@@ -116,7 +117,7 @@ class ServicesRequestsCreate(APIView):
                 })
 
         except Exception as e:
-            traceback.print_exc()
+            # traceback.print_exc()
             message = str(e)     
             return Response({'status':'error','response_code':500,"message":message})
 
@@ -158,3 +159,22 @@ class MyServicesRequests(generics.ListCreateAPIView):
             return Response({"status":status.HTTP_400_BAD_REQUEST,"message":"Service request list.",'data':res_data.data})
         except:
             return Response({"status":status.HTTP_400_BAD_REQUEST,"message":"Please try again latter."})
+
+
+class Dashboard(APIView):
+    permission_classes = [IsAuthenticated]
+    def get(self, request, *args, **kwargs):
+        res_data = {}
+        try:
+            user_obj = request.user
+            if user_obj.is_admin:
+                res_data["active_managers"] = LoginUser.objects.filter(is_active=True,is_manager=True).count()
+                res_data["active_companies"] = LoginUser.objects.filter(is_active=True,is_company=True).count()
+                res_data["active_transactions"] = 0.0
+                res_data["new_requests"] = ServicesRequests.objects.filter(approval_user=user_obj,status="initiated",is_active=True).count()
+
+            pass
+        except Exception as e:
+            # traceback.print_exc()
+            message = str(e)     
+            return Response({'status':'error','response_code':500,"message":message})
