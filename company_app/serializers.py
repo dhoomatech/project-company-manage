@@ -14,3 +14,8 @@ class ServicesRequestsSerializer(serializers.ModelSerializer):
         else:
             return []
     
+
+class FileManagerSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = FileManager
+        fields = "__all__"

@@ -50,6 +50,32 @@ class FileUploadBase64(APIView):
             message = str(e)     
             return Response({'status':'error','response_code':500,"message":message})
 
+class FileUpload(generics.CreateAPIView):
+    queryset = FileManager.objects
+    serializer_class = FileManagerSerializer
+    permission_classes = [AllowAny]
+
+    def post(self, request, **kwargs):
+        try:
+            response = super().post(request, **kwargs)
+            return Response(
+                {
+                    'status': 'success',
+                    'message': 'image updated',
+                    'response_code': status.HTTP_200_OK,
+                    'data': response.data
+                }
+            )
+        except Exception as e:
+            message = str(e)
+            return Response(
+                {
+                    'status': 'error', 
+                    'response_code': 500, 
+                    "message": "Upload Not Completed."
+                }
+            )
+
 
 class ServicesRequestsCreate(APIView):
     permission_classes = [IsAuthenticated]
