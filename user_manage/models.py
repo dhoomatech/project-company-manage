@@ -30,14 +30,13 @@ class DTUserManager(BaseUserManager):
 
 
     # def create_superuser(self, email,username, date_of_birth, password, **extra_fields):
-    def create_superuser(self, email,username, password, phone_number, **extra_fields):
+    def create_superuser(self, email, password, phone_number, **extra_fields):
         """
         Creates and saves a superuser with the given email, date of
         birth and password.
         """
         user = self.create_user(
             email = email,
-            username = username,
             password=password,
             phone_number=phone_number,
         )

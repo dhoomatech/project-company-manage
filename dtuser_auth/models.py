@@ -4,6 +4,8 @@ from django.utils import timezone
 from user_manage.models import LoginUser
 import random
 import datetime
+from twilio.rest import Client
+from django.conf import settings
 # Create your models here.
 
 
@@ -19,6 +21,15 @@ class UserAuthKey(models.Model):
 		self.code = random.randint(1000,9999)
 		self.date = datetime.datetime.now() + datetime.timedelta(minutes=10)
 		self.save()
+
+		# account_sid = settings.TWILIO_ACCOUNT_SID
+		# auth_token = settings.TWILIO_AUTH_TOKEN
+		# client = Client(account_sid, auth_token)
+		# message = client.messages.create(
+		# 	body=f'Hi user, Your otp is {self.code}',
+		# 	from_='+12057547427',
+		# 	to=user_name
+		# )
 	
 	def validate_key(self,user_name,otp,*args, **kwargs):
 		expire_time = timezone.now

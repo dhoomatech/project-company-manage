@@ -62,7 +62,7 @@ INSTALLED_APPS = [
     # 'payment',
     'corsheaders', #registers corheaders as dependency
     'company_app',
-    # 'django_twilio',
+    'django_twilio',
 ]
 
 MIDDLEWARE = [
@@ -109,27 +109,27 @@ WSGI_APPLICATION = 'company_management.wsgi.application'
 #     }
 # }
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-#         'NAME': 'malfati_user',
-#         'USER': 'postgres',
-#         'PASSWORD': 'postgres',
-#         'HOST': 'localhost',
-#         'PORT': '5432',
-#     }
-# }
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'malfati_db',
+        'NAME': 'malfati_user',
         'USER': 'postgres',
-        'PASSWORD': 'Malfati123Bhooma',
+        'PASSWORD': 'postgres',
         'HOST': 'localhost',
         'PORT': '5432',
     }
 }
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#         'NAME': 'malfati_db',
+#         'USER': 'postgres',
+#         'PASSWORD': 'Malfati123Bhooma',
+#         'HOST': 'localhost',
+#         'PORT': '5432',
+#     }
+# }
 
 # Password validation
 # https://docs.djangoproject.com/en/2.2/ref/settings/#auth-password-validators
@@ -222,5 +222,5 @@ DEFAULT_TO_EMAIL = ''
 
 
 TWILIO_ACCOUNT_SID = 'AC48fe8f20b2328ba4076368794fe7c766'
-TWILIO_AUTH_TOKEN = '8dc3d65247ebc9dbfdd4dd23bad33741'
+TWILIO_AUTH_TOKEN = 'ff4bcfee02608cd1aa29a754c0ced392'
 DJANGO_TWILIO_BLACKLIST_CHECK = True
