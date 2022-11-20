@@ -293,7 +293,7 @@ class EmployeeList(generics.ListCreateAPIView):
             if request.user.is_company:
                 self.queryset = self.queryset.filter(company=request.user,is_active=True)
             elif request.user.is_manager:
-                self.queryset = self.queryset.filter(company__id__in=list(ManagerCompany.objects.filter(manager=request.user).values_list('company').all()),is_active=True)
+                self.queryset = self.queryset.filter(company__id__in=list(ManagerCompany.objects.filter(manager=request.user).values_list('company',flat=True).all()),is_active=True)
                 pass
             else:
                 self.queryset = EmployeeDetails.objects.none()
