@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from .models import *
-from company_app.functions import image_url_mapping
+from company_app.functions import get_files_info_bulk,generate_urls
 
 class LoginUserSerializer(serializers.ModelSerializer):
     class Meta:
@@ -36,13 +36,13 @@ class CompanySerializer(serializers.ModelSerializer):
 
 
 class EmployeeDetailsSerializer(serializers.ModelSerializer):
-    # documents = serializers.SerializerMethodField('get_documents')
+    documents = serializers.SerializerMethodField('get_documents')
     class Meta:
         model = EmployeeDetails
         fields = "__all__"
 
-    # def get_documents(self, obj):
-    #     if obj.documents:
-    #         return image_url_mapping(obj.documents)
-    #     else:
-    #         return []
+    def get_documents(self, obj):
+        if obj.documents:
+            return generate_urls(get_files_info_bulk(obj.documents))
+        else:
+            return []
