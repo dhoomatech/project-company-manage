@@ -4,7 +4,7 @@ from django.utils import timezone
 from user_manage.models import LoginUser
 import random
 import datetime
-from twilio.rest import Client
+# from twilio.rest import Client
 from django.conf import settings
 # Create your models here.
 
