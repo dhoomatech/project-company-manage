@@ -45,8 +45,9 @@ def image_url_mapping(data_list):
 
 def get_files_dict(file_ids):
     try:
-        print(file_ids)
         files_urls = FileManager.objects.filter(id__in=file_ids).values('upload','id','user_code').all()
+        for file_obj in files_urls:
+            file_obj['upload'] = settings.MEDIA_URL + file_obj["upload"]
         return files_urls
     except Exception as e:
         import  traceback
