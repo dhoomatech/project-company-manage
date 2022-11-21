@@ -16,6 +16,10 @@ urlpatterns = [
     path('employee-list', EmployeeList.as_view()),
     path('employee-create', CreateEmployee.as_view()),
 
+    path('company-manager-documents', AccountDocumentUpload.as_view()),
+
+    path('employee-documents/<emp_id:int>', AccountDocumentUpload.as_view()),
+
 
     # path('account-login-verify/<str:user_type>', CustomAuthToken.as_view()),
 ]

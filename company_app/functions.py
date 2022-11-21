@@ -1,5 +1,7 @@
 
 from .models import *
+from django.db.models.functions import Concat
+from django.db.models import Value
 
     
 def get_files_info(file_id):
@@ -13,6 +15,13 @@ def get_files_info_bulk(file_ids):
     try:
         files_urls = list(FileManager.objects.filter(id__in=file_ids).values_list('upload',flat=True).all())
         return files_urls
+    except Exception as e:
+        return []
+
+def get_files_id_check(file_ids):
+    try:
+        files_ids = list(FileManager.objects.filter(id__in=file_ids).values_list('id',flat=True).all())
+        return files_ids
     except Exception as e:
         return False
 
@@ -33,3 +42,10 @@ def image_url_mapping(data_list):
         generated_url.append(image_dict)
     
     return generated_url
+
+def get_files_dict(file_ids):
+    try:
+        files_urls = dict(FileManager.objects.filter(id__in=file_ids).annotate(document_url=Concat(settings.STATIC_URL, Value('upload'))).values('document_url','id','user_code').all())
+        return files_urls
+    except Exception as e:
+        return False

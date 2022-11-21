@@ -14,6 +14,7 @@ from .serializers import *
 from django.db.models import Q
 from dtuser_auth.models import UserAuthKey
 from .models import LoginUser,ManagerCompany
+from company_app.functions import get_files_dict,get_files_id_check
 
 class CustomAuthToken(ObtainAuthToken):
 
@@ -167,7 +168,7 @@ class CreateCompanyAccount(APIView):
 
             return Response({"status":200,"message":"Account Created."})
         except:
-            traceback.print_exc()
+            # traceback.print_exc()
             return Response({"status":status.HTTP_400_BAD_REQUEST,"message":"Please try again latter."})
     
     def delete(self, request, *args, **kwargs):
@@ -183,7 +184,6 @@ class CreateCompanyAccount(APIView):
         except:
             traceback.print_exc()
             return Response({"status":status.HTTP_400_BAD_REQUEST,"message":"Please try again latter."})
-
 
 class AdminCompanyList(generics.ListCreateAPIView):
     queryset = LoginUser.objects.all()
@@ -223,7 +223,6 @@ class AdminManagerList(generics.ListCreateAPIView):
             traceback.print_exc()
             return Response({"status":status.HTTP_400_BAD_REQUEST,"message":"Please try again latter."})
 
-
 class CompanyList(generics.ListCreateAPIView):
     queryset = ManagerCompany.objects.all()
     serializer_class = CompanySerializer
@@ -240,7 +239,6 @@ class CompanyList(generics.ListCreateAPIView):
         except:
             traceback.print_exc()
             return Response({"status":status.HTTP_400_BAD_REQUEST,"message":"Please try again latter."})
-
 
 class CreateEmployee(APIView):
     permission_classes = [IsAuthenticated]
@@ -283,7 +281,6 @@ class CreateEmployee(APIView):
             traceback.print_exc()
             return Response({"status":status.HTTP_400_BAD_REQUEST,"message":"Please try again latter."})
 
-
 class EmployeeList(generics.ListCreateAPIView):
     queryset = EmployeeDetails.objects.all()
     serializer_class = EmployeeDetailsSerializer
@@ -302,4 +299,66 @@ class EmployeeList(generics.ListCreateAPIView):
             return Response({"status":200,"message":"Employee list.",'data':res_data.data})
         except:
             traceback.print_exc()
+            return Response({"status":status.HTTP_400_BAD_REQUEST,"message":"Please try again latter."})
+
+class AccountDocumentUpload(APIView):
+    permission_classes = [IsAuthenticated]
+    def get(self, request, *args, **kwargs):
+        try:
+            result_dict = {}
+            user_obj = request.user
+            if user_obj.is_company or user_obj.is_manager:
+                documents_list = user_obj.documents
+                result_dict = get_files_dict(documents_list)
+            
+            return Response({"status":200,"message":"Document List.","data":result_dict})
+        except:
+            return Response({"status":status.HTTP_400_BAD_REQUEST,"message":"Please try again latter."})
+    
+    def post(self, request, *args, **kwargs):
+        try:
+            user_obj = request.user
+            request_post = request.data
+            if user_obj.is_company or user_obj.is_manager and 'document' in request_post:
+                documents_list = user_obj.documents
+                new_documents_list = get_files_id_check(request_post['document'])
+                documents_list += new_documents_list
+                request.user.documents = documents_list
+                request.user.save()
+                return Response({"status":200,"message":"Document updated."})
+                    
+            return Response({"status":status.HTTP_400_BAD_REQUEST,"message":"Not a valid user."})
+        except:
+            return Response({"status":status.HTTP_400_BAD_REQUEST,"message":"Please try again latter."})
+
+class EmployeeDocumentUpload(APIView):
+    permission_classes = [IsAuthenticated]
+    def get(self, request,emp_id, *args, **kwargs):
+        try:
+            result_dict = {}
+            user_obj = request.user
+            emp_obj = EmployeeDetails.objects.filter(is_active=True,is_delete=False)
+            if user_obj.is_company:
+                # emp_obj = emp_obj.
+                documents_list = user_obj.documents
+                result_dict = get_files_dict(documents_list)
+            
+            return Response({"status":200,"message":"Document List.","data":result_dict})
+        except:
+            return Response({"status":status.HTTP_400_BAD_REQUEST,"message":"Please try again latter."})
+    
+    def post(self, request, *args, **kwargs):
+        try:
+            user_obj = request.user
+            request_post = request.data
+            if user_obj.is_company or user_obj.is_manager and 'document' in request_post:
+                documents_list = user_obj.documents
+                new_documents_list = get_files_id_check(request_post['document'])
+                documents_list += new_documents_list
+                request.user.documents = documents_list
+                request.user.save()
+                return Response({"status":200,"message":"Document updated."})
+                    
+            return Response({"status":status.HTTP_400_BAD_REQUEST,"message":"Not a valid user."})
+        except:
             return Response({"status":status.HTTP_400_BAD_REQUEST,"message":"Please try again latter."})
