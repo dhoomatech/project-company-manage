@@ -309,6 +309,7 @@ class AccountDocumentUpload(APIView):
             user_obj = request.user
             if user_obj.is_company or user_obj.is_manager:
                 documents_list = user_obj.documents
+                print(documents_list)
                 result_dict = get_files_dict(documents_list)
             
             return Response({"status":200,"message":"Document List.","data":result_dict})
@@ -320,7 +321,7 @@ class AccountDocumentUpload(APIView):
             user_obj = request.user
             request_post = request.data
             if user_obj.is_company or user_obj.is_manager and 'document' in request_post:
-                documents_list = user_obj.documents
+                documents_list = user_obj.documents if type(user_obj.documents) == list else []
                 new_documents_list = get_files_id_check(request_post['document'])
                 documents_list += new_documents_list
                 request.user.documents = documents_list
@@ -329,6 +330,7 @@ class AccountDocumentUpload(APIView):
                     
             return Response({"status":status.HTTP_400_BAD_REQUEST,"message":"Not a valid user."})
         except:
+            traceback.print_exc()
             return Response({"status":status.HTTP_400_BAD_REQUEST,"message":"Please try again latter."})
 
 class EmployeeDocumentUpload(APIView):
@@ -337,7 +339,7 @@ class EmployeeDocumentUpload(APIView):
         try:
             result_dict = {}
             user_obj = request.user
-            emp_obj = EmployeeDetails.objects.filter(is_active=True,is_delete=False)
+            emp_obj = EmployeeDetails.objects.filter(id=emp_id,is_active=True,is_delete=False)
             if user_obj.is_company:
                 # emp_obj = emp_obj.
                 documents_list = user_obj.documents

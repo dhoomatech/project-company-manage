@@ -1,7 +1,7 @@
 
 from .models import *
 from django.db.models.functions import Concat
-from django.db.models import Value
+from django.db.models import Value,F
 
     
 def get_files_info(file_id):
@@ -45,7 +45,10 @@ def image_url_mapping(data_list):
 
 def get_files_dict(file_ids):
     try:
-        files_urls = dict(FileManager.objects.filter(id__in=file_ids).annotate(document_url=Concat(settings.STATIC_URL, Value('upload'))).values('document_url','id','user_code').all())
+        print(file_ids)
+        files_urls = FileManager.objects.filter(id__in=file_ids).values('upload','id','user_code').all()
         return files_urls
     except Exception as e:
-        return False
+        import  traceback
+        traceback.print_exc()
+        return []
