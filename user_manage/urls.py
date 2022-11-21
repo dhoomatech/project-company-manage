@@ -18,7 +18,7 @@ urlpatterns = [
 
     path('company-manager-documents', AccountDocumentUpload.as_view()),
 
-    path('employee-documents/<int:emp_id>', AccountDocumentUpload.as_view()),
+    path('employee-documents/<int:emp_id>', EmployeeDocumentUpload.as_view()),
 
 
     # path('account-login-verify/<str:user_type>', CustomAuthToken.as_view()),

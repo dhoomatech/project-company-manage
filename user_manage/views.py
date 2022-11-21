@@ -341,26 +341,40 @@ class EmployeeDocumentUpload(APIView):
             user_obj = request.user
             emp_obj = EmployeeDetails.objects.filter(id=emp_id,is_active=True,is_delete=False)
             if user_obj.is_company:
-                # emp_obj = emp_obj.
-                documents_list = user_obj.documents
-                result_dict = get_files_dict(documents_list)
+                emp_obj = emp_obj.filter(company=user_obj).first()
+                if emp_obj:
+                    documents_list = emp_obj.documents
+                
+                else:
+                    return Response({"status":status.HTTP_400_BAD_REQUEST,"message":"Not a valid employee.","data":result_dict})
+
+            if user_obj.is_company:
+                emp_obj = emp_obj.filter(company__in=ManagerCompany.objects.filter(manager=user_obj).values_list().first())
+                if emp_obj:
+                    documents_list = emp_obj.documents
             
+            if documents_list:
+                result_dict = get_files_dict(documents_list)
+
             return Response({"status":200,"message":"Document List.","data":result_dict})
         except:
             return Response({"status":status.HTTP_400_BAD_REQUEST,"message":"Please try again latter."})
     
-    def post(self, request, *args, **kwargs):
+    def post(self, request,emp_id, *args, **kwargs):
         try:
+            emp_obj = EmployeeDetails.objects.filter(id=emp_id,is_active=True,is_delete=False)
             user_obj = request.user
             request_post = request.data
-            if user_obj.is_company or user_obj.is_manager and 'document' in request_post:
-                documents_list = user_obj.documents
+            if user_obj.is_company and 'document' in request_post:
                 new_documents_list = get_files_id_check(request_post['document'])
-                documents_list += new_documents_list
-                request.user.documents = documents_list
-                request.user.save()
+                emp_obj = emp_obj.filter(company=user_obj).first()
+                if emp_obj:
+                    documents_list = emp_obj.documents if type(emp_obj.documents) == list else []
+                    emp_obj.documents = documents_list
+                    emp_obj.save()
+                
                 return Response({"status":200,"message":"Document updated."})
                     
-            return Response({"status":status.HTTP_400_BAD_REQUEST,"message":"Not a valid user."})
+            return Response({"status":status.HTTP_400_BAD_REQUEST,"message":"Not a valid employee id."})
         except:
             return Response({"status":status.HTTP_400_BAD_REQUEST,"message":"Please try again latter."})
