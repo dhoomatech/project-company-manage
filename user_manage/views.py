@@ -309,7 +309,6 @@ class AccountDocumentUpload(APIView):
             user_obj = request.user
             if user_obj.is_company or user_obj.is_manager:
                 documents_list = user_obj.documents
-                print(documents_list)
                 result_dict = get_files_dict(documents_list)
             
             return Response({"status":200,"message":"Document List.","data":result_dict})
@@ -348,8 +347,8 @@ class EmployeeDocumentUpload(APIView):
                 else:
                     return Response({"status":status.HTTP_400_BAD_REQUEST,"message":"Not a valid employee.","data":result_dict})
 
-            if user_obj.is_company:
-                emp_obj = emp_obj.filter(company__in=ManagerCompany.objects.filter(manager=user_obj).values_list().first())
+            if user_obj.is_manager:
+                emp_obj = emp_obj.filter(company__id__in=list(ManagerCompany.objects.filter(manager=user_obj).values_list("company",flat=True).all())).first()
                 if emp_obj:
                     documents_list = emp_obj.documents
             
@@ -376,5 +375,30 @@ class EmployeeDocumentUpload(APIView):
                 return Response({"status":200,"message":"Document updated."})
                     
             return Response({"status":status.HTTP_400_BAD_REQUEST,"message":"Not a valid employee id."})
+        except:
+            return Response({"status":status.HTTP_400_BAD_REQUEST,"message":"Please try again latter."})
+
+
+class CompanyDocuments(APIView):
+    permission_classes = [IsAuthenticated]
+    def get(self, request,company_id, *args, **kwargs):
+        try:
+            result_dict = {}
+            user_obj = request.user
+            emp_obj = EmployeeDetails.objects.filter(id=company_id,is_active=True,is_delete=False).first()
+            exist = ManagerCompany.objects.filter(company=emp_obj,manager=user_obj).first()
+            if exist and user_obj.is_manager:
+                emp_obj = emp_obj.filter(company=user_obj).first()
+                if emp_obj:
+                    documents_list = emp_obj.documents
+                
+                else:
+                    return Response({"status":status.HTTP_400_BAD_REQUEST,"message":"Not a valid company.","data":result_dict})
+
+            
+            if documents_list:
+                result_dict = get_files_dict(documents_list)
+
+            return Response({"status":200,"message":"Document List.","data":result_dict})
         except:
             return Response({"status":status.HTTP_400_BAD_REQUEST,"message":"Please try again latter."})
