@@ -347,8 +347,8 @@ class EmployeeDocumentUpload(APIView):
                 else:
                     return Response({"status":status.HTTP_400_BAD_REQUEST,"message":"Not a valid employee.","data":result_dict})
 
-            if user_obj.is_manager:
-                emp_obj = emp_obj.filter(company__id__in=list(ManagerCompany.objects.filter(manager=user_obj).values_list("company",flat=True).all())).first()
+            elif user_obj.is_manager:
+                emp_obj = emp_obj.filter(company__id__in=list(ManagerCompany.objects.filter(manager=user_obj).all())).first()
                 if emp_obj:
                     documents_list = emp_obj.documents
             
@@ -357,6 +357,7 @@ class EmployeeDocumentUpload(APIView):
 
             return Response({"status":200,"message":"Document List.","data":result_dict})
         except:
+            traceback.print_exc()
             return Response({"status":status.HTTP_400_BAD_REQUEST,"message":"Please try again latter."})
     
     def post(self, request,emp_id, *args, **kwargs):
