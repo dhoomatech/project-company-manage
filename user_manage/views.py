@@ -370,7 +370,7 @@ class EmployeeDocumentUpload(APIView):
                 emp_obj = emp_obj.filter(company=user_obj).first()
                 if emp_obj:
                     documents_list = emp_obj.documents if type(emp_obj.documents) == list else []
-                    emp_obj.documents = documents_list
+                    emp_obj.documents = documents_list + new_documents_list
                     emp_obj.save()
                 
                 return Response({"status":200,"message":"Document updated."})
