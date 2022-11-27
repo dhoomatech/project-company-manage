@@ -394,13 +394,13 @@ class CompanyDocuments(APIView):
     def get(self, request,company_id, *args, **kwargs):
         try:
             result_dict = {}
+            documents_list = []
             user_obj = request.user
-            emp_obj = EmployeeDetails.objects.filter(id=company_id,is_active=True,is_delete=False)
-            exist = ManagerCompany.objects.filter(company=emp_obj,manager=user_obj).first()
+            exist = ManagerCompany.objects.filter(company__id=company_id,manager=user_obj).first()
             if exist and user_obj.is_manager:
-                emp_obj = emp_obj.filter(company=user_obj).first()
-                if emp_obj:
-                    documents_list = emp_obj.documents
+                
+                if exist.company.documents:
+                    documents_list = exist.company.documents
                 
                 else:
                     return Response({"status":status.HTTP_400_BAD_REQUEST,"message":"Not a valid company.","data":result_dict})
@@ -411,4 +411,5 @@ class CompanyDocuments(APIView):
 
             return Response({"status":200,"message":"Document List.","data":result_dict})
         except:
+            traceback.print_exc()
             return Response({"status":status.HTTP_400_BAD_REQUEST,"message":"Please try again latter."})
