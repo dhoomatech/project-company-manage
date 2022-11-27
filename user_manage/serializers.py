@@ -15,9 +15,11 @@ class CompanySerializer(serializers.ModelSerializer):
     company_email = serializers.SerializerMethodField('get_company_email')
     company_phone_code = serializers.SerializerMethodField('get_company_phone_code')
     company_phone_number = serializers.SerializerMethodField('get_company_phone_number')
+    company_id = serializers.SerializerMethodField('get_company_id')
+    manager_id = serializers.SerializerMethodField('get_manager_id')
     class Meta:
         model = ManagerCompany
-        fields = ['id', 'company_fname','company_lname', 'company_email', 'company_phone_code','company_phone_number']
+        fields = ['id','company_id','manager_id','company_fname','company_lname', 'company_email', 'company_phone_code','company_phone_number']
 
     def get_company_fname(self, obj):
         return obj.company.first_name
@@ -33,6 +35,12 @@ class CompanySerializer(serializers.ModelSerializer):
     
     def get_company_phone_number(self, obj):
         return str(obj.company.phone_number)
+    
+    def get_company_id(self, obj):
+        return obj.company.id
+    
+    def get_manager_id(self, obj):
+        return obj.manager.id
 
 
 class EmployeeDetailsSerializer(serializers.ModelSerializer):
