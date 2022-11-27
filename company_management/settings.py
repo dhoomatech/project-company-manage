@@ -62,7 +62,7 @@ INSTALLED_APPS = [
     # 'payment',
     'corsheaders', #registers corheaders as dependency
     'company_app',
-    # 'django_twilio',
+    'django_twilio',
 ]
 
 MIDDLEWARE = [
@@ -221,6 +221,7 @@ EMAIL_HOST_PASSWORD = ''
 DEFAULT_TO_EMAIL = ''
 
 
-TWILIO_ACCOUNT_SID = 'AC48fe8f20b2328ba4076368794fe7c766'
-TWILIO_AUTH_TOKEN = 'ff4bcfee02608cd1aa29a754c0ced392'
+TWILIO_ACCOUNT_SID = 'AC710fde2a95d194182b74045bd8766186'
+TWILIO_AUTH_TOKEN = 'e4429083087c53eb7e8397c1b13e4144'
+TWILIO_NUMBER = '+16402237936'
 DJANGO_TWILIO_BLACKLIST_CHECK = True
