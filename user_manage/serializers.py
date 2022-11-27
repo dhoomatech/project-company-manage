@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from .models import *
+from company_app.models import ServicesRequests
 from company_app.functions import get_files_info_bulk,generate_urls
 
 class LoginUserSerializer(serializers.ModelSerializer):
@@ -17,6 +18,8 @@ class CompanySerializer(serializers.ModelSerializer):
     company_phone_number = serializers.SerializerMethodField('get_company_phone_number')
     company_id = serializers.SerializerMethodField('get_company_id')
     manager_id = serializers.SerializerMethodField('get_manager_id')
+    service_count = serializers.SerializerMethodField('get_service_count')
+    employee_count = serializers.SerializerMethodField('get_employee_count')
     class Meta:
         model = ManagerCompany
         fields = ['id','company_id','manager_id','company_fname','company_lname', 'company_email', 'company_phone_code','company_phone_number']
@@ -41,6 +44,12 @@ class CompanySerializer(serializers.ModelSerializer):
     
     def get_manager_id(self, obj):
         return obj.manager.id
+
+    def get_service_count(self, obj):
+        return EmployeeDetails.objects.filter(company=obj.company).count()
+
+    def get_employee_count(self, obj):
+        return ServicesRequests.objects.filter(request_user=obj.company,is_active=True).count()
 
 
 class EmployeeDetailsSerializer(serializers.ModelSerializer):

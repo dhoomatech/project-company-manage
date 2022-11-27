@@ -47,6 +47,16 @@ class AccountLogin(APIView):
                 auth_check = UserAuthKey()
                 if auth_check.validate_key(user_name,post_data['otp']):
                     token, _ = Token.objects.get_or_create(user=user_obj)
+                    extra_values = {}
+                    if user_obj.is_company:
+                        manager_obj = ManagerCompany.objects.filter(company=user_obj).first()
+                        manager = manager_obj.manager
+                        extra_values.update({"manager":{
+                            'first_name':manager.first_name,
+                            'last_name':manager.last_name,
+                            'phone_number':str(user_obj.phone_number),
+                        }})
+
                     return Response({"status":status.HTTP_201_CREATED,"message":"Login Successfull.","data":{
                         "token":token.key,
                         "first_name":user_obj.first_name,
@@ -56,6 +66,7 @@ class AccountLogin(APIView):
                         "email":user_obj.email,
                         "company":user_obj.is_company,
                         "manager":user_obj.is_manager,
+                        **extra_values
                     }})
                 else:
                     return Response({"status":status.HTTP_400_BAD_REQUEST,"message":"Please enter a valid OTP."})
