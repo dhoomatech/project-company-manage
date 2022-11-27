@@ -4,7 +4,7 @@ from django.contrib.auth.models import (
 )
 from django.conf import settings
 from django.utils import timezone
-# from phonenumber_field.modelfields import PhoneNumberField
+from phone_field import PhoneField
 # from django.contrib.postgres.fields import JSONField
 # Create your models here.
 
@@ -76,7 +76,7 @@ class LoginUser(AbstractBaseUser,PermissionsMixin):
     is_company = models.BooleanField(default=False)
     is_manager = models.BooleanField(default=False)
     phone_code = models.CharField(max_length=4, blank=True,null=True)
-    phone_number = models.CharField(null=False, blank=False, unique=True,max_length=100)
+    phone_number = PhoneField(blank=False, unique=True)
     created = models.DateTimeField(default=timezone.now)
    
     expiry_date = models.DateField(blank=True, null=True)
