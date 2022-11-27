@@ -54,7 +54,7 @@ class AccountLogin(APIView):
                         extra_values.update({"manager":{
                             'first_name':manager.first_name,
                             'last_name':manager.last_name,
-                            'phone_number':str(user_obj.phone_number),
+                            'phone_number':str(manager.phone_number),
                         }})
 
                     return Response({"status":status.HTTP_201_CREATED,"message":"Login Successfull.","data":{
