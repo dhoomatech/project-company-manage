@@ -52,7 +52,7 @@ class AccountLogin(APIView):
                         "first_name":user_obj.first_name,
                         "last_name":user_obj.last_name,
                         "phone_code":user_obj.phone_code,
-                        "phone_number":user_obj.phone_number,
+                        "phone_number":str(user_obj.phone_number),
                         "email":user_obj.email,
                         "company":user_obj.is_company,
                         "manager":user_obj.is_manager,
@@ -92,7 +92,7 @@ class AdminAccountLogin(APIView):
                         "first_name":user_obj.first_name,
                         "last_name":user_obj.last_name,
                         "phone_code":user_obj.phone_code,
-                        "phone_number":user_obj.phone_number,
+                        "phone_number":str(user_obj.phone_number),
                         "email":user_obj.email,
                     }})
                 
