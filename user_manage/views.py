@@ -302,7 +302,7 @@ class EmployeeList(generics.ListCreateAPIView):
             res_data = super().get(self, request, *args, **kwargs)
             return Response({"status":200,"message":"Employee list.",'data':res_data.data})
         except:
-            traceback.print_exc()
+            # traceback.print_exc()
             return Response({"status":status.HTTP_400_BAD_REQUEST,"message":"Please try again latter."})
 
 class AccountDocumentUpload(APIView):
@@ -352,7 +352,12 @@ class EmployeeDocumentUpload(APIView):
                     return Response({"status":status.HTTP_400_BAD_REQUEST,"message":"Not a valid employee.","data":result_dict})
 
             elif user_obj.is_manager:
-                emp_obj = emp_obj.filter(company__id__in=list(ManagerCompany.objects.filter(manager=user_obj).all())).first()
+                company = self.request.query_params.get('company',None)
+                if company:
+                    emp_obj = emp_obj.filter(company__id__in=list(ManagerCompany.objects.filter(manager=user_obj,company__id=company).all())).first()
+                else:
+                    emp_obj = emp_obj.filter(company__id__in=list(ManagerCompany.objects.filter(manager=user_obj).all())).first()
+
                 if emp_obj:
                     documents_list = emp_obj.documents
             
