@@ -22,7 +22,7 @@ class CompanySerializer(serializers.ModelSerializer):
     employee_count = serializers.SerializerMethodField('get_employee_count')
     class Meta:
         model = ManagerCompany
-        fields = ['id','company_id','manager_id','company_fname','company_lname', 'company_email', 'company_phone_code','company_phone_number']
+        fields = ['id','company_id','manager_id','company_fname','company_lname', 'company_email', 'company_phone_code','company_phone_number','service_count','employee_count']
 
     def get_company_fname(self, obj):
         return obj.company.first_name
