@@ -32,7 +32,7 @@ class CompanySerializer(serializers.ModelSerializer):
         return obj.company.phone_code
     
     def get_company_phone_number(self, obj):
-        return obj.company.phone_number
+        return str(obj.company.phone_number)
 
 
 class EmployeeDetailsSerializer(serializers.ModelSerializer):
