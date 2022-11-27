@@ -395,7 +395,7 @@ class CompanyDocuments(APIView):
         try:
             result_dict = {}
             user_obj = request.user
-            emp_obj = EmployeeDetails.objects.filter(id=company_id,is_active=True,is_delete=False).first()
+            emp_obj = EmployeeDetails.objects.filter(id=company_id,is_active=True,is_delete=False)
             exist = ManagerCompany.objects.filter(company=emp_obj,manager=user_obj).first()
             if exist and user_obj.is_manager:
                 emp_obj = emp_obj.filter(company=user_obj).first()
