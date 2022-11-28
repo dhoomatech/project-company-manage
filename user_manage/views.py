@@ -429,13 +429,13 @@ class CompanyDocuments(APIView):
                 exist = ManagerCompany.objects.filter(company__id=company_id,manager=user_obj).first()
                 if exist:
                     company_obj = LoginUser.objects.filter(id=company_id).first()
-                    # company_obj = exist.company
-                    documents_list = company_obj.documents if type(company_obj.documents) == list else []
-                    new_documents_list = get_files_id_check(request_post['document'])
-                    documents_list += new_documents_list
-                    company_obj.documents = documents_list
-                    company_obj.save()
-                    return Response({"status":200,"message":"Document updated."})
+                    if company_obj:
+                        documents_list = company_obj.documents if type(company_obj.documents) == list else []
+                        new_documents_list = get_files_id_check(request_post['document'])
+                        documents_list += new_documents_list
+                        company_obj.documents = documents_list
+                        company_obj.save()
+                        return Response({"status":200,"message":"Document updated."})
                     
             return Response({"status":status.HTTP_400_BAD_REQUEST,"message":"Not a valid user."})
         except:
