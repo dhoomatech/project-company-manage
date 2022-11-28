@@ -410,7 +410,7 @@ class CompanyDocuments(APIView):
             exist = ManagerCompany.objects.filter(company__id=company_id,manager=user_obj).first()
             if exist and user_obj.is_manager:
                 
-                if exist.company.documents:
+                if exist.company:
                     documents_list = exist.company.documents
                 
                 else:
@@ -430,7 +430,7 @@ class CompanyDocuments(APIView):
             user_obj = request.user
             request_post = request.data
             if user_obj.is_manager and 'document' in request_post:
-                
+
                 exist = ManagerCompany.objects.filter(company__id=company_id,manager=user_obj).first()
                 if exist:
                     company_obj = exist.company
