@@ -404,7 +404,7 @@ class CompanyDocuments(APIView):
     permission_classes = [IsAuthenticated]
     def get(self, request,company_id, *args, **kwargs):
         try:
-            result_dict = {}
+            result_dict = []
             documents_list = []
             user_obj = request.user
             exist = ManagerCompany.objects.filter(company__id=company_id,manager=user_obj).first()
@@ -412,14 +412,10 @@ class CompanyDocuments(APIView):
                 
                 if exist.company:
                     documents_list = exist.company.documents
-                
                 else:
                     return Response({"status":status.HTTP_400_BAD_REQUEST,"message":"Not a valid company.","data":result_dict})
-
-            
             if documents_list:
                 result_dict = get_files_dict(documents_list)
-
             return Response({"status":200,"message":"Document List.","data":result_dict})
         except:
             traceback.print_exc()
@@ -430,10 +426,10 @@ class CompanyDocuments(APIView):
             user_obj = request.user
             request_post = request.data
             if user_obj.is_manager and 'document' in request_post:
-
                 exist = ManagerCompany.objects.filter(company__id=company_id,manager=user_obj).first()
                 if exist:
-                    company_obj = exist.company
+                    company_obj = LoginUser.objects.filter(id=company_id).first()
+                    # company_obj = exist.company
                     documents_list = company_obj.documents if type(company_obj.documents) == list else []
                     new_documents_list = get_files_id_check(request_post['document'])
                     documents_list += new_documents_list
@@ -443,5 +439,5 @@ class CompanyDocuments(APIView):
                     
             return Response({"status":status.HTTP_400_BAD_REQUEST,"message":"Not a valid user."})
         except:
-            traceback.print_exc()
+            # traceback.print_exc()
             return Response({"status":status.HTTP_400_BAD_REQUEST,"message":"Please try again latter."})
