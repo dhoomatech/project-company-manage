@@ -440,6 +440,6 @@ class CompanyDocuments(APIView):
                         return Response({"status":200,"message":"Document updated."})
                     
             return Response({"status":status.HTTP_400_BAD_REQUEST,"message":"Not a valid user."})
-        except:
+        except Exception as e:
             # traceback.print_exc()
-            return Response({"status":status.HTTP_400_BAD_REQUEST,"message":"Please try again latter."})
+            return Response({"status":status.HTTP_400_BAD_REQUEST,"message":str(e)})
