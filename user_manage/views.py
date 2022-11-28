@@ -51,7 +51,7 @@ class AccountLogin(APIView):
                     if user_obj.is_company:
                         manager_obj = ManagerCompany.objects.filter(company=user_obj).first()
                         manager = manager_obj.manager
-                        extra_values.update({"manager":{
+                        extra_values.update({"manager_data":{
                             'first_name':manager.first_name,
                             'last_name':manager.last_name,
                             'phone_number':str(manager.phone_number),
