@@ -7,6 +7,7 @@ urlpatterns = [
     path('service-request-send', ServicesRequestsCreate.as_view()),
     path('service-request-list', ServicesRequestsApproval.as_view()),
     path('my-service-request', MyServicesRequests.as_view()),
+    path('my-notifications', NotificationList.as_view()),
 
     path('dashboard', Dashboard.as_view()),
 ]

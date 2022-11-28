@@ -178,3 +178,17 @@ class Dashboard(APIView):
             # traceback.print_exc()
             message = str(e)     
             return Response({'status':'error','response_code':500,"message":message})
+
+
+class NotificationList(generics.ListCreateAPIView):
+    queryset = Notifications.objects.all()
+    serializer_class = NotificationSerializer
+    permission_classes = [IsAuthenticated]
+    def get(self, request, *args, **kwargs):
+        try:
+            user_obj = request.user
+            self.queryset = self.queryset.filter(request_user=user_obj)
+            res_data = super().get(self, request, *args, **kwargs)
+            return Response({"status":status.HTTP_400_BAD_REQUEST,"message":"Service request list.",'data':res_data.data})
+        except:
+            return Response({"status":status.HTTP_400_BAD_REQUEST,"message":"Please try again latter."})

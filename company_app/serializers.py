@@ -19,3 +19,8 @@ class FileManagerSerializer(serializers.ModelSerializer):
     class Meta:
         model = FileManager
         fields = "__all__"
+
+class NotificationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Notifications
+        fields = "__all__"

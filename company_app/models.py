@@ -39,3 +39,11 @@ class ManagerServices(models.Model):
     created = models.DateTimeField(default=timezone.now)
     modified = models.DateTimeField(auto_now=True)
     documents = models.JSONField(default=dict,blank=True)
+
+class Notifications(models.Model):
+    tittle = models.CharField(max_length=250, blank=False, null=True)
+    discription = models.TextField(blank=False, null=True)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='user',blank=True,null=True)
+    is_active = models.BooleanField(default=True)
+    created = models.DateTimeField(default=timezone.now)
+    modified = models.DateTimeField(auto_now=True)

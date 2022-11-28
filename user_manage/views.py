@@ -424,3 +424,24 @@ class CompanyDocuments(APIView):
         except:
             traceback.print_exc()
             return Response({"status":status.HTTP_400_BAD_REQUEST,"message":"Please try again latter."})
+    
+    def post(self, request,company_id, *args, **kwargs):
+        try:
+            user_obj = request.user
+            request_post = request.data
+            if user_obj.is_manager and 'document' in request_post:
+                
+                exist = ManagerCompany.objects.filter(company__id=company_id,manager=user_obj).first()
+                if exist:
+                    company_obj = exist.company
+                    documents_list = company_obj.documents if type(company_obj.documents) == list else []
+                    new_documents_list = get_files_id_check(request_post['document'])
+                    documents_list += new_documents_list
+                    company_obj.documents = documents_list
+                    company_obj.save()
+                    return Response({"status":200,"message":"Document updated."})
+                    
+            return Response({"status":status.HTTP_400_BAD_REQUEST,"message":"Not a valid user."})
+        except:
+            traceback.print_exc()
+            return Response({"status":status.HTTP_400_BAD_REQUEST,"message":"Please try again latter."})
