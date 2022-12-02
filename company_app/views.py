@@ -210,6 +210,24 @@ class MyServicesRequests(generics.ListCreateAPIView):
         except:
             return Response({"status":status.HTTP_400_BAD_REQUEST,"message":"Please try again latter."})
 
+class ServicesRequestsApproval(APIView):
+    permission_classes = [IsAuthenticated]
+    def post(self, request,service_id, *args, **kwargs):
+        try:
+            user_obj = request.user
+            post_data = request.data
+            status = post_data["status"]
+            service_request = ServicesRequests.objects.filter(approval_user=user_obj,id=service_id).first()
+            if service_request:
+                service_request.status = status
+                service_request.save()
+                return Response({"status":200,"message":"Status updated successfully."})
+
+            return Response({"status":400,"message":"Unautherized entry."})
+        except Exception as e:
+            # traceback.print_exc()
+            message = str(e)     
+            return Response({'status':'error','response_code':500,"message":message})
 
 class Dashboard(APIView):
     permission_classes = [IsAuthenticated]

@@ -11,5 +11,7 @@ urlpatterns = [
     path('manager-service-create', ServicesManagerCreate.as_view()),
     path('manager-service-list', CompanyManagerServiceList.as_view()),
 
+    path('manager-service-approval/<int:service_id>', ServicesRequestsApproval.as_view()),
+
     path('dashboard', Dashboard.as_view()),
 ]

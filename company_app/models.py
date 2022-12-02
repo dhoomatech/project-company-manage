@@ -24,6 +24,7 @@ class ManagerServices(models.Model):
     created = models.DateTimeField(default=timezone.now)
     modified = models.DateTimeField(auto_now=True)
     documents = models.JSONField(default=dict,blank=True)
+    
 class ServicesRequests(models.Model):
     tittle = models.CharField(max_length=250, blank=False, null=True)
     paid_amount = models.CharField(max_length=250, blank=False, null=True)
