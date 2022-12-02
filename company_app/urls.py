@@ -8,6 +8,8 @@ urlpatterns = [
     path('service-request-list', ServicesRequestsApproval.as_view()),
     path('my-service-request', MyServicesRequests.as_view()),
     path('my-notifications', NotificationList.as_view()),
+    path('manager-service-create', ServicesManagerCreate.as_view()),
+    path('manager-service-list', CompanyManagerServiceList.as_view()),
 
     path('dashboard', Dashboard.as_view()),
 ]

@@ -94,6 +94,10 @@ class ServicesRequestsCreate(APIView):
                 report_user = LoginUser.objects.filter(is_superuser=True).first()
                 pass
             if report_user:
+                service_obj = None
+                if 'service_id' in post_data:
+                    service_obj = ManagerServices.objects.filter(id=post_data['service_id']).first()
+
                 service_obj = ServicesRequests()
                 service_obj.tittle = post_data['tittle']
                 service_obj.paid_amount = post_data['paid_amount'] if 'paid_amount' in post_data else ''
@@ -102,6 +106,7 @@ class ServicesRequestsCreate(APIView):
                 service_obj.approval_user = report_user
                 service_obj.request_user = user_obj
                 service_obj.request_type = request_type
+                service_obj.manager_service = service_obj
                 service_obj.save()
 
                 return Response({
@@ -132,6 +137,51 @@ class ServicesRequestsCreate(APIView):
 
         return False
 
+class ServicesManagerCreate(APIView):
+    permission_classes = [IsAuthenticated]
+    def post(self, request, *args, **kwargs):
+        try:
+            post_data = request.data
+            user_obj = request.user
+            if user_obj.is_manager:
+                service_obj = ManagerServices()
+                service_obj.tittle = post_data['tittle']
+                service_obj.discription = post_data['discription']
+                service_obj.manager = user_obj
+                service_obj.documents = post_data['documents'] if 'documents' in post_data else []
+                service_obj.save()
+                return Response({
+                    'status':"success",
+                    'message': "Service created",
+                    'response_code': 200,
+                })
+            
+            return Response({
+                    'status':"failed",
+                    'message': "Service not created",
+                    'response_code': 400,
+                })
+        except Exception as e:
+            message = str(e)     
+            return Response({'status':'error','response_code':500,"message":message})
+
+class CompanyManagerServiceList(generics.ListCreateAPIView):
+    queryset = ManagerServices.objects.all()
+    serializer_class = ManagerServicesSerializer
+    permission_classes = [IsAuthenticated]
+    def get(self, request, *args, **kwargs):
+        try:
+            user_obj = request.user
+            if user_obj.is_manager:
+                self.queryset = self.queryset.filter(manager=user_obj)
+            else:
+                connection_obj = ManagerCompany.objects.filter(company=user_obj).first()
+                manager_obj = connection_obj.manager
+                self.queryset = self.queryset.filter(manager=manager_obj)
+            res_data = super().get(self, request, *args, **kwargs)
+            return Response({"status":status.HTTP_400_BAD_REQUEST,"message":"Service request list.",'data':res_data.data})
+        except:
+            return Response({"status":status.HTTP_400_BAD_REQUEST,"message":"Please try again latter."})
 
 class ServicesRequestsApproval(generics.ListCreateAPIView):
     queryset = ServicesRequests.objects.all()

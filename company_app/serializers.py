@@ -24,3 +24,9 @@ class NotificationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Notifications
         fields = "__all__"
+
+
+class ManagerServicesSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ManagerServices
+        fields = "__all__"
