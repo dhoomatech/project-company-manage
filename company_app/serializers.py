@@ -9,7 +9,7 @@ class ServicesRequestsSerializer(serializers.ModelSerializer):
         fields = ['id', 'tittle', 'discription', 'status','documents','transaction_id']
 
     def get_documents(self, obj):
-        if obj.documents:
+        if obj.documents and type(obj.documents) == dict:
             return image_url_mapping(obj.documents)
         else:
             return []

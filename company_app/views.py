@@ -209,6 +209,7 @@ class MyServicesRequests(generics.ListCreateAPIView):
             res_data = super().get(self, request, *args, **kwargs)
             return Response({"status":status.HTTP_400_BAD_REQUEST,"message":"Service request list.",'data':res_data.data})
         except:
+            traceback.print_exc()
             return Response({"status":status.HTTP_400_BAD_REQUEST,"message":"Please try again latter."})
 
 class ServicesRequestsApproval(APIView):
