@@ -94,9 +94,6 @@ class ServicesRequestsCreate(APIView):
                 report_user = LoginUser.objects.filter(is_superuser=True).first()
                 pass
             if report_user:
-                service_obj = None
-                if 'service_id' in post_data:
-                    service_obj = ManagerServices.objects.filter(id=post_data['service_id']).first()
 
                 service_obj = ServicesRequests()
                 service_obj.tittle = post_data['tittle']
@@ -106,7 +103,11 @@ class ServicesRequestsCreate(APIView):
                 service_obj.approval_user = report_user
                 service_obj.request_user = user_obj
                 service_obj.request_type = request_type
-                service_obj.manager_service = service_obj
+                
+                if 'service_id' in post_data:
+                    m_service_obj = ManagerServices.objects.filter(id=post_data['service_id']).first()
+                    service_obj.manager_service = m_service_obj
+                
                 service_obj.save()
 
                 return Response({
