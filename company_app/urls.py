@@ -5,7 +5,7 @@ urlpatterns = [
     path('file-upload-64', FileUploadBase64.as_view()),
     path('file-upload', FileUpload.as_view()),
     path('service-request-send', ServicesRequestsCreate.as_view()),
-    path('service-request-list', ServicesRequestsApproval.as_view()),
+    path('service-request-list', ServicesRequestsApprovalList.as_view()),
     path('my-service-request', MyServicesRequests.as_view()),
     path('my-notifications', NotificationList.as_view()),
     path('manager-service-create', ServicesManagerCreate.as_view()),

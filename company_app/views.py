@@ -184,7 +184,7 @@ class CompanyManagerServiceList(generics.ListCreateAPIView):
         except:
             return Response({"status":status.HTTP_400_BAD_REQUEST,"message":"Please try again latter."})
 
-class ServicesRequestsApproval(generics.ListCreateAPIView):
+class ServicesRequestsApprovalList(generics.ListCreateAPIView):
     queryset = ServicesRequests.objects.all()
     serializer_class = ServicesRequestsSerializer
     permission_classes = [IsAuthenticated]
@@ -195,6 +195,7 @@ class ServicesRequestsApproval(generics.ListCreateAPIView):
             res_data = super().get(self, request, *args, **kwargs)
             return Response({"status":status.HTTP_400_BAD_REQUEST,"message":"Service request list.",'data':res_data.data})
         except:
+            traceback.print_exc()
             return Response({"status":status.HTTP_400_BAD_REQUEST,"message":"Please try again latter."})
 
 
