@@ -91,28 +91,30 @@ class AdminAccountLogin(APIView):
             if "user_name" not in post_data:
                 return Response({"status":status.HTTP_400_BAD_REQUEST,"message":"User name key missing."})
             
+            if "password" not in post_data:
+                return Response({"status":status.HTTP_400_BAD_REQUEST,"message":"Password missing."})
+
             user_name = post_data['user_name']
-            user_obj = LoginUser.objects.filter(Q(email=user_name) | Q(username=user_name) | Q(phone_number=user_name)).first()
+            password = post_data['password']
+            user_obj = LoginUser.objects.filter(Q(email=user_name)  | Q(phone_number=user_name)).first()
             if user_obj and user_obj.is_active == False or user_obj and user_obj.is_admin == False:
-                return Response({"status":"400","message":"You are not a active user."})
+                return Response({"status":"400","message":"You are not a active user or admin user."})
             
-            if "otp" in post_data:
+            if user_obj and user_obj.check_password(password):
                 auth_check = UserAuthKey()
-                if auth_check.validate_key(user_name):
-                    token, created = Token.objects.get_or_create(user=user_obj)
-                    return Response({"status":status.HTTP_201_CREATED,"message":"Login Successfull.","data":{
-                        "token":token,
-                        "first_name":user_obj.first_name,
-                        "last_name":user_obj.last_name,
-                        "phone_code":user_obj.phone_code,
-                        "phone_number":str(user_obj.phone_number),
-                        "email":user_obj.email,
-                    }})
+                
+                token, created = Token.objects.get_or_create(user=user_obj)
+                return Response({"status":status.HTTP_201_CREATED,"message":"Login Successfull.","data":{
+                    "token":token.key,
+                    "first_name":user_obj.first_name,
+                    "last_name":user_obj.last_name,
+                    "phone_code":user_obj.phone_code,
+                    "phone_number":str(user_obj.phone_number),
+                    "email":user_obj.email,
+                }})
                 
             else:
-                auth_key = UserAuthKey()
-                auth_key.generate_token(user_name)
-                return Response({"status":status.HTTP_201_CREATED,"message":"OTP succcessfully send.","data":auth_key.code})
+                return Response({"status":status.HTTP_400_BAD_REQUEST,"message":"Please enter valid password."})
             
         except:
             traceback.print_exc()

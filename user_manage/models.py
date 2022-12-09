@@ -29,7 +29,7 @@ class DTUserManager(BaseUserManager):
 
 
     # def create_superuser(self, email,username, date_of_birth, password, **extra_fields):
-    def create_superuser(self, email, password, phone_number, **extra_fields):
+    def create_superuser(self, email,phone_number, password, **extra_fields):
         """
         Creates and saves a superuser with the given email, date of
         birth and password.
@@ -54,9 +54,9 @@ class DTUserManager(BaseUserManager):
         user.save(using=self._db)
         return user
 
-    def get_by_natural_key(self, username):
-        case_insensitive_username_field = '{}__iexact'.format(self.model.USERNAME_FIELD)
-        return self.get(**{case_insensitive_username_field: username})
+    # def get_by_natural_key(self, username):
+    #     case_insensitive_username_field = '{}__iexact'.format(self.model.USERNAME_FIELD)
+    #     return self.get(**{case_insensitive_username_field: username})
 
 
 class LoginUser(AbstractBaseUser,PermissionsMixin):

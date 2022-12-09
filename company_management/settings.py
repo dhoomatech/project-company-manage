@@ -112,7 +112,7 @@ WSGI_APPLICATION = 'company_management.wsgi.application'
 # DATABASES = {
 #     'default': {
 #         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-#         'NAME': 'malfati_user',
+#         'NAME': 'malfati_user2',
 #         'USER': 'postgres',
 #         'PASSWORD': 'postgres',
 #         'HOST': 'localhost',
