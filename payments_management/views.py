@@ -140,6 +140,40 @@ class PaymentProcess(View):
         return JsonResponse({"status":400,"message":"Payment can't process now."})
 
 
+class PaymentProcess2(View):
+    template_name = 'payments_management/payment_process.html'
+    def get(self, request, *args, **kwargs):
+        package_id = self.request.GET.get('package_id')
+        first_name = self.request.GET.get('first_name')
+        middle_name = self.request.GET.get('middle_name')
+        last_name = self.request.GET.get('last_name')
+        email = self.request.GET.get('email')
+        phone_code = self.request.GET.get('phone_code')
+        phone_number = self.request.GET.get('phone_number')
+        context = {
+            "package_id":package_id,
+            "first_name":first_name,
+            "middle_name":middle_name,
+            "last_name":last_name,
+            "email":email,
+            "phone_code":phone_code,
+            "phone_number":phone_number,
+            "package_amount":0.0,
+            "package_name":"No Package",
+            "amount_per_unit":"AED0",
+            "total_amount":"AED0",
+            "redirect":True,
+        }
+
+        if package_id:
+            package_obj = MembershipPack.objects.filter(id=package_id).first()
+            if package_obj:
+                context.update({"package_name":package_obj.tittle,"package_amount":package_obj.amount,"amount_per_unit":"AED"+str(package_obj.amount),"total_amount":"AED"+str(package_obj.amount)})
+                print(context)
+                return render(request, self.template_name,context)
+
+        return JsonResponse({"status":400,"message":"Payment can't process now."})
+
 class PaymentSucess(View):
     template_name = 'payments_management/payment_success.html'
     def get(self, request, *args, **kwargs):

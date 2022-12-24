@@ -10,11 +10,17 @@
     <script type="text/javascript" src="https://goSellJSLib.b-cdn.net/v2.0.0/js/gosell.js"></script>
 
     <div id="root"></div>
-    {% comment %} <button id="openLightBox" onclick="goSell.openLightBox()">Proceed to pay pop up</button>
-    <button id="openPage" onclick="goSell.openPaymentPage()">Proceed to pay redirect</button> {% endcomment %}
+    {% comment %} <button id="openLightBox" onclick="goSell.openLightBox()">Proceed to pay pop up</button> {% endcomment %}
+    <button id="openPage" onclick="goSell.openPaymentPage()">Confirm to pay</button>
 
     <script>
-      goSell.openLightBox()
+      {% comment %} document.getElementById("openPage").click(); {% endcomment %}
+      {% comment %} if ("{{redirect}}") {
+        alert("rrrrrrrrrrr")
+        goSell.openLightBox()
+      }else{
+        goSell.openPaymentPage()
+      } {% endcomment %}
       goSell.config({
       containerID:"root",
       gateway:{

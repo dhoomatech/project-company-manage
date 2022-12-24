@@ -7,6 +7,7 @@ urlpatterns = [
     path('admin/membership', MembershipPackageAdmin.as_view()),
     path('admin/membership-update', MembershipPackageAdminUpdate.as_view()),
     path('process', PaymentProcess.as_view()),
+    path('process2', PaymentProcess2.as_view()),
     path('peyment-complete', PaymentSucess.as_view()),
 
 ]
