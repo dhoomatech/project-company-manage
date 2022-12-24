@@ -9,5 +9,6 @@ urlpatterns = [
     path('process', PaymentProcess.as_view()),
     path('process2', PaymentProcess2.as_view()),
     path('peyment-complete', PaymentSucess.as_view()),
+    path('token-update', PaymentTokenUpdate.as_view()),
 
 ]

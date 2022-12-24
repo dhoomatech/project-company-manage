@@ -14,4 +14,6 @@ urlpatterns = [
     path('manager-service-approval/<int:service_id>', ServicesRequestsApproval.as_view()),
 
     path('dashboard', Dashboard.as_view()),
+
+    path('folder-update', FolderFileUpdate.as_view()),
 ]

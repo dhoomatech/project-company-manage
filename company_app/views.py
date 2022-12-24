@@ -263,3 +263,18 @@ class NotificationList(generics.ListCreateAPIView):
             return Response({"status":status.HTTP_400_BAD_REQUEST,"message":"Service request list.",'data':res_data.data})
         except:
             return Response({"status":status.HTTP_400_BAD_REQUEST,"message":"Please try again latter."})
+
+class FolderFileUpdate(APIView):
+    permission_classes = [IsAuthenticated]
+    def post(self, request, *args, **kwargs):
+        res_data = {}
+        try:
+            post_data = request.data
+            folder_name = post_data['folder_name']
+            file_ids = post_data['file_ids']
+            FileManager.objects.filter(id__in=file_ids).update(folder_name=folder_name)
+            return Response({"status":200,"message":"Folder update successfully."})
+        except Exception as e:
+            # traceback.print_exc()
+            message = str(e)     
+            return Response({'status':'error','response_code':500,"message":message})

@@ -26,6 +26,7 @@ class Transactions(models.Model):
     created = models.DateTimeField(default=timezone.now)
     modified = models.DateTimeField(auto_now=True)
     transaction_id = models.CharField(max_length=250, blank=False, null=True)
+    transaction_token = models.CharField(max_length=250, blank=False, null=True)
 
 class MembershipPack(models.Model):
     tittle = models.CharField(max_length=250, blank=False, null=True)
@@ -49,4 +50,14 @@ class SubscriptionList(models.Model):
     updated = models.DateTimeField(auto_now=True)
     is_active = models.BooleanField(default=True)
     try_count = models.IntegerField(default=True,blank=False, null=True)
-    
+
+class PaymentTransation(models.Model):
+    phone = models.CharField(max_length=250, blank=False, null=True)
+    paid_amount = models.CharField(max_length=250, blank=False, null=True)
+    status = models.CharField(max_length=250, blank=False, null=True,choices=STATUS,default="initiated")
+    is_active = models.BooleanField(default=True)
+    created = models.DateTimeField(default=timezone.now)
+    modified = models.DateTimeField(auto_now=True)
+    transaction_id = models.CharField(max_length=250, blank=False, null=True)
+    transaction_token = models.CharField(max_length=250, blank=False, null=True)
+    currency = models.CharField(max_length=150, blank=False, null=True,default="AED")

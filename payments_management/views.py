@@ -174,7 +174,23 @@ class PaymentProcess2(View):
 
         return JsonResponse({"status":400,"message":"Payment can't process now."})
 
-class PaymentSucess(View):
-    template_name = 'payments_management/payment_success.html'
+class PaymentSucess(APIView):
     def get(self, request, *args, **kwargs):
-        return render(request, self.template_name)
+        try:
+            token = request.data['token']
+            payment_obj = PaymentTransation.objects.filter(transaction_token=token).first()
+            payment_obj.status = "paid"
+            payment_obj.save()
+            return Response({"status":200,"message":"Payment success."})
+        except:
+            return Response({"status":status.HTTP_400_BAD_REQUEST,"message":"Please try again latter."})
+
+class PaymentTokenUpdate(APIView):
+    def post(self, request, *args, **kwargs):
+        try:
+            token = request.data['token']
+            mobile = request.data['mobile']
+            PaymentTransation.objects.create(phone=mobile,transaction_token=token)
+            return Response({"status":200,"message":"Token update successfull."})
+        except:
+            return Response({"status":status.HTTP_400_BAD_REQUEST,"message":"Please try again latter."})
