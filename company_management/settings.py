@@ -62,6 +62,7 @@ INSTALLED_APPS = [
     # 'payment',
     'corsheaders', #registers corheaders as dependency
     'company_app',
+    'payments_management',
     'django_twilio',
 ]
 
@@ -83,7 +84,7 @@ AUTH_USER_MODEL = 'user_manage.LoginUser'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR,'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

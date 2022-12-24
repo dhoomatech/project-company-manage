@@ -1,10 +1,12 @@
 from django.urls import path
-from . import views
+# from . import views
+from .views import *
 
 urlpatterns = [
-    path('createOrder/', views.createOrder),
-    path('verifySignature/', views.verifySignature),
+    path('membership-list', MembershipPackage.as_view()),
+    path('admin/membership', MembershipPackageAdmin.as_view()),
+    path('admin/membership-update', MembershipPackageAdminUpdate.as_view()),
+    path('process', PaymentProcess.as_view()),
+    path('peyment-complete', PaymentSucess.as_view()),
 
-    path('transaction-list', views.TransactionList),
-    path('transaction-from-list', views.TransactionFromList),
 ]

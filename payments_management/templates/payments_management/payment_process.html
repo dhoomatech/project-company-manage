@@ -1,0 +1,118 @@
+<html>
+<head>
+    <title>Payment Page</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+    <link rel="shortcut icon" href="https://goSellJSLib.b-cdn.net/v2.0.0/imgs/tap-favicon.ico" />
+    <link href="https://goSellJSLib.b-cdn.net/v2.0.0/css/gosell.css" rel="stylesheet" />
+</head>
+<body>
+    <script type="text/javascript" src="https://goSellJSLib.b-cdn.net/v2.0.0/js/gosell.js"></script>
+
+    <div id="root"></div>
+    {% comment %} <button id="openLightBox" onclick="goSell.openLightBox()">Proceed to pay pop up</button>
+    <button id="openPage" onclick="goSell.openPaymentPage()">Proceed to pay redirect</button> {% endcomment %}
+
+    <script>
+      goSell.openLightBox()
+      goSell.config({
+      containerID:"root",
+      gateway:{
+        publicKey:"pk_test_Vlk842B1EA7tDN5QbrfGjYzh",
+        language:"en",
+        contactInfo:true,
+        supportedCurrencies:"all",
+        supportedPaymentMethods: "all",
+        saveCardOption:false,
+        customerCards: true,
+        notifications:'standard',
+        callback:(response) => {
+            console.log('response', response);
+        },
+        onClose: () => {
+            console.log("onClose Event");
+        },
+        backgroundImg: {
+          url: 'imgURL',
+          opacity: '0.5'
+        },
+        labels:{
+            cardNumber:"Card Number",
+            expirationDate:"MM/YY",
+            cvv:"CVV",
+            cardHolder:"Name on Card",
+            actionButton:"Pay"
+        },
+        style: {
+            base: {
+              color: '#535353',
+              lineHeight: '18px',
+              fontFamily: 'sans-serif',
+              fontSmoothing: 'antialiased',
+              fontSize: '16px',
+              '::placeholder': {
+                color: 'rgba(0, 0, 0, 0.26)',
+                fontSize:'15px'
+              }
+            },
+            invalid: {
+              color: 'red',
+              iconColor: '#fa755a '
+            }
+        }
+      },
+      customer:{
+        
+        first_name: "{{first_name}}",
+        middle_name: "{{middle_name}}",
+        last_name: "{{last_name}}",
+        email: "{{email}}",
+        phone: {
+            country_code: "{{phone_code}}",
+            number: "{{phone_number}}"
+        }
+      },
+      order:{
+        amount: "{{package_amount}}",
+        currency:"AED",
+        items:[{
+          id:1,
+          name:'{{package_name}}',
+          description: '{{package_name}}',
+          quantity:'1',
+          amount_per_unit:'{{amount_per_unit}}',
+          discount: {
+            type: 'P',
+            value: '0%'
+          },
+          total_amount: '{{total_amount}}'
+        },],
+        shipping:null,
+        taxes: null
+      },
+     transaction:{
+       mode: 'charge',
+       charge:{
+          saveCard: true,
+          threeDSecure: true,
+          description: "Test Description",
+          statement_descriptor: "Sample",
+          reference:{
+            transaction: "txn_0001",
+            order: "ord_0001"
+          },
+          metadata:{},
+          receipt:{
+            email: false,
+            sms: true
+          },
+          redirect: "http://15.207.233.212:8001/payment/peyment-complete",
+          post: null,
+        }
+     }
+    });
+
+    </script>
+
+</body>
+</html>
