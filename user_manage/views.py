@@ -351,6 +351,10 @@ class AccountDocumentUpload(APIView):
             if user_obj.is_company or user_obj.is_manager and 'document' in request_post:
                 documents_list = user_obj.documents if type(user_obj.documents) == list else []
                 new_documents_list = get_files_id_check(request_post['document'])
+                
+                folder_name = request_post['folder_name'] if 'folder_name' in request_post else "default"
+                folder_files_name_update(request_post['document'],folder_name)
+
                 documents_list += new_documents_list
                 request.user.documents = documents_list
                 request.user.save()
