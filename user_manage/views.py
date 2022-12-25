@@ -14,7 +14,7 @@ from .serializers import *
 from django.db.models import Q
 from dtuser_auth.models import UserAuthKey
 from .models import LoginUser,ManagerCompany
-from company_app.functions import get_files_dict,get_files_id_check
+from company_app.functions import get_files_dict,get_files_id_check,get_files_folder_dict
 
 class CustomAuthToken(ObtainAuthToken):
 
@@ -331,7 +331,7 @@ class AccountDocumentUpload(APIView):
             user_obj = request.user
             if user_obj.is_company or user_obj.is_manager:
                 documents_list = user_obj.documents
-                result_dict = get_files_dict(documents_list)
+                result_dict = get_files_folder_dict(documents_list)
             
             return Response({"status":200,"message":"Document List.","data":result_dict})
         except:
@@ -380,7 +380,7 @@ class EmployeeDocumentUpload(APIView):
                     documents_list = emp_obj.documents
             
             if documents_list:
-                result_dict = get_files_dict(documents_list)
+                result_dict = get_files_folder_dict(documents_list)
 
             return Response({"status":200,"message":"Document List.","data":result_dict})
         except:
@@ -422,7 +422,7 @@ class CompanyDocuments(APIView):
                 else:
                     return Response({"status":status.HTTP_400_BAD_REQUEST,"message":"Not a valid company.","data":result_dict})
             if documents_list:
-                result_dict = get_files_dict(documents_list)
+                result_dict = get_files_folder_dict(documents_list)
             return Response({"status":200,"message":"Document List.","data":result_dict})
         except:
             traceback.print_exc()
