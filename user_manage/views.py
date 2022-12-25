@@ -59,6 +59,7 @@ class AccountLogin(APIView):
                     else:
                         extra_values.update({"manager_data":{}})
                     expiry_date_obj = user_obj.expiry_date
+                    expiry_date_str = str(expiry_date_obj) if expiry_date_obj else ""
                     expiry_date = expiry_date_obj.strftime("%Y-%m-%d %H:%M:%S")
                     return Response({"status":status.HTTP_201_CREATED,"message":"Login Successfull.","data":{
                         "token":token.key,
@@ -69,7 +70,7 @@ class AccountLogin(APIView):
                         "email":user_obj.email,
                         "company":user_obj.is_company,
                         "manager":user_obj.is_manager,
-                        "expiry_date_value":str(user_obj.expiry_date),
+                        "expiry_date_value":expiry_date_str,
                         "expiry_date":expiry_date,
                         **extra_values
                     }})
