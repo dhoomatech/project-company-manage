@@ -145,6 +145,7 @@ class PaymentProcess(View):
                     if user_obj:
                         days_before = date.today() + timedelta(days=package_obj.expire_days)
                         user_obj.expiry_date = days_before
+                        user_obj.is_active = True
                         user_obj.save()
                         return JsonResponse({"status":200,"message":"Free subscription added."})
                     else:

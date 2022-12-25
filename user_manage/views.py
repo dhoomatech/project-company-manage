@@ -72,6 +72,7 @@ class AccountLogin(APIView):
                         "email":user_obj.email,
                         "company":user_obj.is_company,
                         "manager":user_obj.is_manager,
+                        "active":user_obj.is_active,
                         "expiry_date_value":expiry_date_str,
                         "expiry_date":expiry_date,
                         **extra_values
