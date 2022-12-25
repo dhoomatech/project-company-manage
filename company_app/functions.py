@@ -69,3 +69,10 @@ def get_files_folder_dict(file_ids):
         import  traceback
         traceback.print_exc()
         return []
+
+def folder_files_name_update(file_ids,folder_name):
+    try:
+        FileManager.objects.filter(id__in=file_ids).update(folder_name=folder_name)
+        return True
+    except Exception as e:
+        return False

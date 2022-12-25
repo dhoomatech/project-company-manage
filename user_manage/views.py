@@ -14,7 +14,7 @@ from .serializers import *
 from django.db.models import Q
 from dtuser_auth.models import UserAuthKey
 from .models import LoginUser,ManagerCompany
-from company_app.functions import get_files_dict,get_files_id_check,get_files_folder_dict
+from company_app.functions import get_files_dict,get_files_id_check,get_files_folder_dict,folder_files_name_update
 
 class CustomAuthToken(ObtainAuthToken):
 
@@ -50,6 +50,9 @@ class AccountLogin(APIView):
                     extra_values = {}
                     if user_obj.is_company:
                         manager_obj = ManagerCompany.objects.filter(company=user_obj).first()
+                        if not manager_obj.manager.is_active:
+                            return Response({"status":status.HTTP_400_BAD_REQUEST,"message":"Cant login now. manager inactive stage."})
+
                         manager = manager_obj.manager
                         extra_values.update({"manager_data":{
                             'first_name':manager.first_name,
@@ -397,7 +400,9 @@ class EmployeeDocumentUpload(APIView):
             user_obj = request.user
             request_post = request.data
             if user_obj.is_company and 'document' in request_post:
+                folder_name = request_post['folder_name'] if 'folder_name' in request_post else "default"
                 new_documents_list = get_files_id_check(request_post['document'])
+                folder_files_name_update(request_post['document'],folder_name)
                 emp_obj = emp_obj.filter(company=user_obj).first()
                 if emp_obj:
                     documents_list = emp_obj.documents if type(emp_obj.documents) == list else []
@@ -443,6 +448,8 @@ class CompanyDocuments(APIView):
                     if company_obj:
                         documents_list = company_obj.documents if type(company_obj.documents) == list else []
                         new_documents_list = get_files_id_check(request_post['document'])
+                        folder_name = request_post['folder_name'] if 'folder_name' in request_post else "default"
+                        folder_files_name_update(request_post['document'],folder_name)
                         documents_list += new_documents_list
                         company_obj.documents = documents_list
                         company_obj.save()
