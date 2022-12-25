@@ -34,6 +34,7 @@ class MembershipPack(models.Model):
     is_active = models.BooleanField(default=True)
     created = models.DateTimeField(default=timezone.now)
     amount = models.FloatField(blank=False, null=True,default=0.0)
+    expire_days = models.IntegerField(default=30,blank=False, null=True)
 
 class userCardData(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='card_user',blank=True,null=True)

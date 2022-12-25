@@ -9,6 +9,9 @@ from .models import *
 from .serializers import *
 from django.http import JsonResponse  
 
+from user_manage.models import LoginUser
+from datetime import date, timedelta
+
 # import razorpay
 
 # Create your views here.
@@ -116,6 +119,7 @@ class PaymentProcess(View):
         email = self.request.GET.get('email')
         phone_code = self.request.GET.get('phone_code')
         phone_number = self.request.GET.get('phone_number')
+        amount = self.request.GET.get('amount')
         context = {
             "package_id":package_id,
             "first_name":first_name,
@@ -133,9 +137,23 @@ class PaymentProcess(View):
         if package_id:
             package_obj = MembershipPack.objects.filter(id=package_id).first()
             if package_obj:
-                context.update({"package_name":package_obj.tittle,"package_amount":package_obj.amount,"amount_per_unit":"AED"+str(package_obj.amount),"total_amount":"AED"+str(package_obj.amount)})
-                print(context)
-                return render(request, self.template_name,context)
+                if package_obj.amount > 0.0:
+                    context.update({"package_name":package_obj.tittle,"package_amount":package_obj.amount,"amount_per_unit":"AED"+str(package_obj.amount),"total_amount":"AED"+str(package_obj.amount)})
+                    return render(request, self.template_name,context)
+                else:
+                    user_obj = LoginUser.objects.filter(phone_number=phone_number).first()
+                    if user_obj:
+                        days_before = date.today() + timedelta(days=package_obj.expire_days)
+                        user_obj.expiry_date = days_before
+                        user_obj.save()
+                        return JsonResponse({"status":200,"message":"Free subscription added."})
+                    else:
+                        return JsonResponse({"status":400,"message":"Not a valid user."})
+            
+        elif amount:
+            amount_value = float(amount)
+            context.update({"package_name":"Add fund","package_amount":amount_value,"amount_per_unit":"AED"+str(amount_value),"total_amount":"AED"+str(amount_value)})
+            return render(request, self.template_name,context)
 
         return JsonResponse({"status":400,"message":"Payment can't process now."})
 
@@ -194,3 +212,4 @@ class PaymentTokenUpdate(APIView):
             return Response({"status":200,"message":"Token update successfull."})
         except:
             return Response({"status":status.HTTP_400_BAD_REQUEST,"message":"Please try again latter."})
+            
