@@ -40,6 +40,9 @@ class AccountLogin(APIView):
             
             user_name = post_data['user_name']
             user_obj = LoginUser.objects.filter(Q(email=user_name) | Q(phone_number=user_name)).first()
+            if not user_obj:
+                return Response({"status":"400","message":"Please enter a valid user name."})
+
             if user_obj and user_obj.is_active == False or user_obj and user_obj.is_manager == False and user_obj.is_company == False:
                 return Response({"status":"400","message":"You are not a active user."})
             
@@ -86,7 +89,7 @@ class AccountLogin(APIView):
             else:
                 auth_key = UserAuthKey()
                 auth_key.generate_token(user_name)
-                return Response({"status":status.HTTP_201_CREATED,"message":"OTP succcessfully send.","data":auth_key.code})
+                return Response({"status":status.HTTP_201_CREATED,"message":"OTP send succcessfully.","data":auth_key.code})
             
             
         except Exception as e:
