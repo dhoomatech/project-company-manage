@@ -41,7 +41,7 @@ class AccountLogin(APIView):
             user_name = post_data['user_name']
             user_obj = LoginUser.objects.filter(Q(email=user_name) | Q(phone_number=user_name)).first()
             if not user_obj:
-                return Response({"status":"400","message":"Please enter a valid user name."})
+                return Response({"status":"400","message":"Please enter a valid number."})
 
             if user_obj and user_obj.is_active == False or user_obj and user_obj.is_manager == False and user_obj.is_company == False:
                 return Response({"status":"400","message":"You are not a active user."})
