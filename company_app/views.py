@@ -20,6 +20,8 @@ import base64
 import random
 import string
 
+from rest_framework.response import Response
+
 
 class FileUploadBase64(APIView):
     permission_classes = [IsAuthenticated]
@@ -278,3 +280,13 @@ class FolderFileUpdate(APIView):
             # traceback.print_exc()
             message = str(e)     
             return Response({'status':'error','response_code':500,"message":message})
+
+from django.shortcuts import render
+from django.views import View
+
+
+class PrivacyPolicy(View):
+    template_name = 'company_app/privacy_policy.html'
+    def get(self, request, *args, **kwargs):
+        
+        return render(request, self.template_name,{})

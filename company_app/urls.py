@@ -16,4 +16,8 @@ urlpatterns = [
     path('dashboard', Dashboard.as_view()),
 
     path('folder-update', FolderFileUpdate.as_view()),
+
+    path('privacy-policy', PrivacyPolicy.as_view()),
+
+
 ]
