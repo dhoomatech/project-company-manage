@@ -209,7 +209,8 @@ class PaymentTokenUpdate(APIView):
         try:
             token = request.data['token']
             mobile = request.data['mobile']
-            PaymentTransation.objects.create(phone=mobile,transaction_token=token)
+            mode = request.data['mode'] if "mode" in request.data else ""
+            PaymentTransation.objects.create(phone=mobile,transaction_token=token,paid_mode=mode)
             return Response({"status":200,"message":"Token update successfull."})
         except:
             return Response({"status":status.HTTP_400_BAD_REQUEST,"message":"Please try again latter."})

@@ -55,6 +55,7 @@ class SubscriptionList(models.Model):
 class PaymentTransation(models.Model):
     phone = models.CharField(max_length=250, blank=False, null=True)
     paid_amount = models.CharField(max_length=250, blank=False, null=True)
+    paid_mode = models.CharField(max_length=250, blank=False, null=True)
     status = models.CharField(max_length=250, blank=False, null=True,choices=STATUS,default="initiated")
     is_active = models.BooleanField(default=True)
     created = models.DateTimeField(default=timezone.now)

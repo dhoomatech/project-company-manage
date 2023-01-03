@@ -70,6 +70,26 @@ def get_files_folder_dict(file_ids):
         traceback.print_exc()
         return []
 
+def get_files_folder_dict_list(file_ids):
+    try:
+        files_urls = FileManager.objects.filter(id__in=file_ids).values('upload','id','user_code','folder_name','is_active','expiry_date').order_by('folder_name').all()
+        folder_structure_list = []
+        folder_structure = {}
+        for file_obj in files_urls:
+            file_obj['upload'] = settings.MEDIA_URL + file_obj["upload"]
+            if file_obj['folder_name'] in folder_structure:
+                folder_structure[file_obj['folder_name']].append(file_obj)
+            else:
+                folder_structure[file_obj['folder_name']] = [file_obj]
+        for result_obj in folder_structure:
+            folder_structure_list.append({"name":result_obj,"value":folder_structure[result_obj]})
+
+        return folder_structure_list
+    except Exception as e:
+        import  traceback
+        traceback.print_exc()
+        return []
+
 def folder_files_name_update(file_ids,folder_name):
     try:
         FileManager.objects.filter(id__in=file_ids).update(folder_name=folder_name)

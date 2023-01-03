@@ -100,6 +100,16 @@ TEMPLATES = [
 WSGI_APPLICATION = 'company_management.wsgi.application'
 
 
+CELERY_BACKEND_URL = 'redis://localhost:6379/0'
+CELERY_BROKER_REDIS_URL="redis://localhost:6380"
+
+CELERY_BROKER_URL = 'redis://localhost:6379'
+CELERY_RESULT_BACKEND = 'redis://localhost:6379'
+CELERY_ACCEPT_CONTENT = ['application/json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_TIMEZONE = 'Asia/Karachi'
+
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
@@ -198,11 +208,19 @@ DISABLE_COLLECTSTATIC=1
 
 EMAIL_CONFIG = "smtp://user@:password@localhost:25"
 
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost:8000",
-    "http://127.0.0.1:8000",
-    "http://65.2.33.1:8000",
-]
+# CORS_ALLOWED_ORIGINS = ["*"]
+# CORS_ALLOW_HEADERS = [
+#     "accept",
+#     "accept-encoding",
+#     "authorization",
+#     "content-type",
+#     "dnt",
+#     "origin",
+#     "user-agent",
+#     "x-csrftoken",
+#     "x-requested-with",
+# ]
+CORS_ORIGIN_ALLOW_ALL=True
 
 RAZOR_KEY_ID = "YOUR_KEY_ID"
 RAZOR_KEY_SECRET = "YOUR_KEY_SECRET"
