@@ -10,7 +10,7 @@ from phone_field import PhoneField
 
 
 class DTUserManager(BaseUserManager):
-    def create_user(self, email, password=None, **extra_fields):
+    def create_user(self, email,phone_number, password=None, **extra_fields):
         """
         Creates and saves a User with the given email, date of
         birth and password.
@@ -20,6 +20,8 @@ class DTUserManager(BaseUserManager):
 
         user = self.model(
             email=self.normalize_email(email),
+            password=password,
+            phone_number=phone_number,
             **extra_fields
         )
         
@@ -69,9 +71,9 @@ class LoginUser(AbstractBaseUser,PermissionsMixin):
     first_name = models.CharField(max_length=255, null=False,default='')
     last_name = models.CharField(max_length=255, null=False,default='')
     country_code = models.CharField(max_length=5, null=True,default='')
-    is_staff = models.BooleanField(default=False,null=True)
+    is_staff = models.BooleanField(default=True,null=True)
     is_active = models.BooleanField(default=False)
-    is_admin = models.BooleanField(default=False)
+    is_admin = models.BooleanField(default=True)
     is_superuser = models.BooleanField(default=False)
     is_company = models.BooleanField(default=False)
     is_manager = models.BooleanField(default=False)
