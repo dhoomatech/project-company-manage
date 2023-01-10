@@ -81,10 +81,25 @@ MIDDLEWARE = [
 ROOT_URLCONF = 'company_management.urls'
 AUTH_USER_MODEL = 'user_manage.LoginUser'
 
+# TEMPLATES = [
+#     {
+#         'BACKEND': 'django.template.backends.django.DjangoTemplates',
+#         'DIRS': [os.path.join(BASE_DIR,'templates')],
+#         'APP_DIRS': True,
+#         'OPTIONS': {
+#             'context_processors': [
+#                 'django.template.context_processors.debug',
+#                 'django.template.context_processors.request',
+#                 'django.contrib.auth.context_processors.auth',
+#                 'django.contrib.messages.context_processors.messages',
+#             ],
+#         },
+#     },
+# ]
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR,'templates')],
+        'DIRS': [],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -240,6 +255,7 @@ EMAIL_HOST_PASSWORD = ''
 DEFAULT_TO_EMAIL = ''
 
 
+# TWILIO_ACCOUNT_SID = 'AC710fde2a95d194182b74045bd8766186'
 TWILIO_ACCOUNT_SID = 'AC710fde2a95d194182b74045bd8766186'
 # TWILIO_AUTH_TOKEN = 'e4429083087c53eb7e8397c1b13e4144'
 TWILIO_AUTH_TOKEN = '63092aaadbf4295ca0ec353e941296b3'

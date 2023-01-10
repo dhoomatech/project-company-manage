@@ -152,6 +152,7 @@ class CreateManagerAccount(APIView):
             user_obj.is_manager = True
             user_obj.save()
             return Response({"status":200,"message":"Manager Create Successfull."})
+            
         except Exception as e:
             traceback.print_exc()
             return Response({"status":status.HTTP_400_BAD_REQUEST,"message":str(e)})

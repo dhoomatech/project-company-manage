@@ -14,13 +14,13 @@ def sms_twilio_send():
 
     # Find your Account SID and Auth Token in Account Info and set the environment variables.
     # See http://twil.io/secure
-    account_sid = "AC48fe8f20b2328ba4076368794fe7c766"
-    auth_token = "ff4bcfee02608cd1aa29a754c0ced392"
+    account_sid = "AC710fde2a95d194182b74045bd8766186"
+    auth_token = "63092aaadbf4295ca0ec353e941296b3"
     client = Client(account_sid, auth_token)
     message = client.messages.create(
         body='Hi there vishnu vp this message from dhoomatech.',
-        from_='+12057547427',
-        to='+918943788706'
+        from_='+16402237936',
+        to='+919633752456'
     )
 
     print(message.sid)
