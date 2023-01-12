@@ -78,6 +78,13 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+CSRF_TRUSTED_ORIGINS = [
+    "http://127.0.0.1:8000",
+    "15.207.233.212:8001"
+]
+CSRF_COOKIE_SECURE = True
+CSRF_COOKIE_HTTPONLY = True
+
 ROOT_URLCONF = 'company_management.urls'
 AUTH_USER_MODEL = 'user_manage.LoginUser'
 
