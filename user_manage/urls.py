@@ -18,6 +18,8 @@ urlpatterns = [
 
     path('company-manager-documents', AccountDocumentUpload.as_view()),
 
+    path('user-profile-update', UpdateDataProfile.as_view()),
+
     path('employee-documents/<int:emp_id>', EmployeeDocumentUpload.as_view()),
     path('company-documents/<int:company_id>', CompanyDocuments.as_view()),
 

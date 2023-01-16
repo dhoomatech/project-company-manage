@@ -467,3 +467,28 @@ class CompanyDocuments(APIView):
         except Exception as e:
             # traceback.print_exc()
             return Response({"status":status.HTTP_400_BAD_REQUEST,"message":str(e)})
+
+
+class UpdateDataProfile(APIView):
+    permission_classes = [IsAuthenticated]
+    def get(self, request, *args, **kwargs):
+        try:
+            user_obj = request.user
+            request_data = request.data
+            if 'first_name' in request_data and request_data['first_name']:
+                user_obj.first_name = request_data['first_name']
+            
+            if 'last_name' in request_data and request_data['last_name']:
+                user_obj.last_name = request_data['last_name']
+            
+            if 'phone_number' in request_data and request_data['phone_number']:
+                user_obj.phone_number = request_data['phone_number']
+            
+            if 'email' in request_data and request_data['email']:
+                user_obj.email = request_data['email']
+            
+            user_obj.save()
+            return Response({"status":200,"message":"Account updated."})
+        except:
+            # traceback.print_exc()
+            return Response({"status":status.HTTP_400_BAD_REQUEST,"message":"Please try again latter."})
