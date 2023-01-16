@@ -40,6 +40,7 @@ class AccountLogin(APIView):
             
             user_name = post_data['user_name']
             user_obj = LoginUser.objects.filter(Q(email=user_name) | Q(phone_number=user_name)).first()
+            profile_pic = get_files_info(user_obj.picture)
             if not user_obj:
                 return Response({"status":"400","message":"Please enter a valid number."})
 
@@ -81,6 +82,7 @@ class AccountLogin(APIView):
                         "active":user_obj.is_active,
                         "expiry_date_value":expiry_date_str,
                         "expiry_date":expiry_date,
+                        "profile_pic":profile_pic,
                         **extra_values
                     }})
                 else:
