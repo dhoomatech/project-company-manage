@@ -502,12 +502,12 @@ class UpdateDataProfile(APIView):
             # traceback.print_exc()
             return Response({"status":status.HTTP_400_BAD_REQUEST,"message":"Please try again latter."})
 
-class UpdateDataProfile(APIView):
-    permission_classes = [IsAuthenticated]
-    def post(self, request, *args, **kwargs):
-        try:
-            pass
-            return Response({"status":200,"message":"Account updated."})
-        except:
-            # traceback.print_exc()
-            return Response({"status":status.HTTP_400_BAD_REQUEST,"message":"Please try again latter."})
+# class UpdateDataProfilePic(generics):
+#     permission_classes = [IsAuthenticated]
+#     def post(self, request, *args, **kwargs):
+#         try:
+#             pass
+#             return Response({"status":200,"message":"Account updated."})
+#         except:
+#             # traceback.print_exc()
+#             return Response({"status":status.HTTP_400_BAD_REQUEST,"message":"Please try again latter."})
