@@ -14,7 +14,7 @@ from .serializers import *
 from django.db.models import Q
 from dtuser_auth.models import UserAuthKey
 from .models import LoginUser,ManagerCompany
-from company_app.functions import get_files_dict,get_files_id_check,get_files_folder_dict,folder_files_name_update,get_files_folder_dict_list
+from company_app.functions import get_files_dict,get_files_id_check,get_files_folder_dict,folder_files_name_update,get_files_folder_dict_list,get_files_info
 
 class CustomAuthToken(ObtainAuthToken):
 
@@ -475,6 +475,8 @@ class UpdateDataProfile(APIView):
         try:
             user_obj = request.user
             user_values = LoginUser.objects.filter(id=user_obj.id).values().first()
+            profile_image_id = user_values['picture'] if 'picture' in user_values and user_values['picture'] else ""
+            user_values["profile_pic"] = get_files_info(profile_image_id)
             return Response({"status":200,"message":"Account updated.","data":dict(user_values)})
         except:
             return Response({"status":status.HTTP_400_BAD_REQUEST,"message":"Please try again latter."})
@@ -495,7 +497,10 @@ class UpdateDataProfile(APIView):
             
             if 'email' in request_data and request_data['email']:
                 user_obj.email = request_data['email']
-            
+
+            if 'picture' in request_data and request_data['picture']:
+                user_obj.picture = request_data['picture']
+
             user_obj.save()
             return Response({"status":200,"message":"Account updated."})
         except:
