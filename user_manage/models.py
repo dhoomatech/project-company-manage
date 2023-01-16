@@ -82,8 +82,8 @@ class LoginUser(AbstractBaseUser,PermissionsMixin):
     phone_number = PhoneField(blank=False, unique=True)
     created = models.DateTimeField(default=timezone.now)
     
-    picture = models.ImageField(upload_to="profile_images", blank=True)
-    
+    picture = models.CharField(max_length=50, blank=True,null=True)
+
     expiry_date = models.DateField(blank=True, null=True,default=timezone.now)
     is_eligible = models.SmallIntegerField(default=1,blank = True,null=True)
 
