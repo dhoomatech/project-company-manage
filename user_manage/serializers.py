@@ -6,8 +6,12 @@ from company_app.functions import get_files_info_bulk,generate_urls
 class LoginUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = LoginUser
-        fields = ['id', 'first_name', 'last_name', 'country_code','phone_code','phone_number','expiry_date','created']
+        fields = ['picture']
 
+class LoginUserProfileImageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = LoginUser
+        fields = ['id', 'first_name', 'last_name', 'country_code','phone_code','phone_number','expiry_date','created']
 
 
 class CompanySerializer(serializers.ModelSerializer):

@@ -471,6 +471,15 @@ class CompanyDocuments(APIView):
 
 class UpdateDataProfile(APIView):
     permission_classes = [IsAuthenticated]
+    def get(self, request, *args, **kwargs):
+        try:
+            user_obj = request.user
+            user_values = LoginUser.objects.filter(id=user_obj.id).values().first()
+            return Response({"status":200,"message":"Account updated.","data":dict(user_values)})
+        except:
+            return Response({"status":status.HTTP_400_BAD_REQUEST,"message":"Please try again latter."})
+
+
     def post(self, request, *args, **kwargs):
         try:
             user_obj = request.user
@@ -493,3 +502,12 @@ class UpdateDataProfile(APIView):
             # traceback.print_exc()
             return Response({"status":status.HTTP_400_BAD_REQUEST,"message":"Please try again latter."})
 
+class UpdateDataProfile(APIView):
+    permission_classes = [IsAuthenticated]
+    def post(self, request, *args, **kwargs):
+        try:
+            pass
+            return Response({"status":200,"message":"Account updated."})
+        except:
+            # traceback.print_exc()
+            return Response({"status":status.HTTP_400_BAD_REQUEST,"message":"Please try again latter."})
