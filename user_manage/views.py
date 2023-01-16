@@ -471,7 +471,7 @@ class CompanyDocuments(APIView):
 
 class UpdateDataProfile(APIView):
     permission_classes = [IsAuthenticated]
-    def get(self, request, *args, **kwargs):
+    def post(self, request, *args, **kwargs):
         try:
             user_obj = request.user
             request_data = request.data
@@ -492,3 +492,4 @@ class UpdateDataProfile(APIView):
         except:
             # traceback.print_exc()
             return Response({"status":status.HTTP_400_BAD_REQUEST,"message":"Please try again latter."})
+
