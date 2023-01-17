@@ -47,6 +47,12 @@ ALLOWED_HOSTS = ["*"]
 # Application definition
 
 INSTALLED_APPS = [
+    'admin_tools',
+    # 'admin_tools.theming',
+    # 'admin_tools.menu',
+    # 'admin_tools.dashboard',
+
+    'admin_menu',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -65,6 +71,7 @@ INSTALLED_APPS = [
     'payments_management',
     'django_twilio',
 ]
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -142,27 +149,27 @@ CELERY_TIMEZONE = 'Asia/Karachi'
 #     }
 # }
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-#         'NAME': 'malfati_user2',
-#         'USER': 'postgres',
-#         'PASSWORD': 'postgres',
-#         'HOST': 'localhost',
-#         'PORT': '5432',
-#     }
-# }
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'malfati_db',
+        'NAME': 'malfati_user2',
         'USER': 'postgres',
-        'PASSWORD': 'Malfati123Bhooma',
+        'PASSWORD': 'postgres',
         'HOST': 'localhost',
         'PORT': '5432',
     }
 }
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#         'NAME': 'malfati_db',
+#         'USER': 'postgres',
+#         'PASSWORD': 'Malfati123Bhooma',
+#         'HOST': 'localhost',
+#         'PORT': '5432',
+#     }
+# }
 
 # Password validation
 # https://docs.djangoproject.com/en/2.2/ref/settings/#auth-password-validators
@@ -204,6 +211,7 @@ USE_TZ = True
 STATIC_URL = f'{DEFAULT_SITE_URL}/static/'
 MEDIA_URL = f'{DEFAULT_SITE_URL}/media/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+
 # STATICFILES_DIRS = [
 #     os.path.join(BASE_DIR,'static')
 # ]
@@ -271,3 +279,39 @@ DJANGO_TWILIO_BLACKLIST_CHECK = True
 
 
 DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
+
+
+# ADMIN_LOGO = 'logo.png'
+
+MENU_WEIGHT = {
+    'World': 20,
+    'Auth': 4,
+    'Sample': 5
+}
+
+ADMIN_STYLE = {
+    'primary-color': '#164B36',
+    'secondary-color': '#092117',
+    'tertiary-color': '#51B48E'
+}
+ADMIN_STYLE = {
+    'background': 'white',
+    'primary-color': '#205280',
+    'primary-text': '#d6d5d2',
+    'secondary-color': '#3B75AD',
+    'secondary-text': 'white',
+    'tertiary-color': '#F2F9FC',
+    'tertiary-text': 'black',
+    'breadcrumb-color': 'whitesmoke',
+    'breadcrumb-text': 'black',
+    'focus-color': '#eaeaea',
+    'focus-text': '#666',
+    'primary-button': '#26904A',
+    'primary-button-text':' white',
+    'secondary-button': '#999',
+    'secondary-button-text': 'white',
+    'link-color': '#333',
+    'link-color-hover': 'lighten($link-color, 20%)',
+    'logo-width': 'auto',
+    'logo-height': '35px'
+}

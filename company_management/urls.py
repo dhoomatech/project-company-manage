@@ -24,6 +24,7 @@ urlpatterns = [
     path('user/', include('user_manage.urls')),
     path('company/', include('company_app.urls')),
     path('payment/', include('payments_management.urls')),
+    # url(r'^admin_tools/', include('admin_tools.urls')),
     # path('company/', include('company_app.urls')),
 ]
 

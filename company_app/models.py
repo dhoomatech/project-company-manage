@@ -45,6 +45,8 @@ class ServicesRequests(models.Model):
 
 
 
+
+
 class Notifications(models.Model):
     tittle = models.CharField(max_length=250, blank=False, null=True)
     discription = models.TextField(blank=False, null=True)
