@@ -390,21 +390,22 @@ class EmployeeDocumentUpload(APIView):
 
             elif user_obj.is_manager:
                 company = self.request.query_params.get('company',None)
-                if company:
-                    emp_obj = emp_obj.filter(company__id__in=list(ManagerCompany.objects.filter(manager=user_obj,company__id=company).all())).first()
-                else:
-                    emp_obj = emp_obj.filter(company__id__in=list(ManagerCompany.objects.filter(manager=user_obj).all())).first()
-
                 if emp_obj:
-                    documents_list = emp_obj.documents
+                    if company:
+                        emp_obj = emp_obj.filter(company__id__in=list(ManagerCompany.objects.filter(manager=user_obj,company__id=company).all())).first()
+                    else:
+                        emp_obj = emp_obj.filter(company__id__in=list(ManagerCompany.objects.filter(manager=user_obj).all())).first()
+
+                    if emp_obj:
+                        documents_list = emp_obj.documents
             
             if documents_list:
                 result_dict = get_files_folder_dict_list(documents_list)
 
             return Response({"status":200,"message":"Document List.","data":result_dict})
-        except:
+        except Exception as e:
             traceback.print_exc()
-            return Response({"status":status.HTTP_400_BAD_REQUEST,"message":"Please try again latter."})
+            return Response({"status":status.HTTP_400_BAD_REQUEST,"message":"Please try again latter." + str(e)})
     
     def post(self, request,emp_id, *args, **kwargs):
         try:
