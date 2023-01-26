@@ -53,8 +53,31 @@ class FileUploadBase64(APIView):
             message = str(e)     
             return Response({'status':'error','response_code':500,"message":message})
 
+class FileDelete(APIView):
+    permission_classes = [IsAuthenticated]
+    def get(self, request,file_id, **kwargs):
+        try:
+            FileManager.objects.filter(id=file_id).delete()
+            return Response(
+                {
+                    'status': 'success',
+                    'message': 'file delete successfullly.',
+                    'response_code': status.HTTP_200_OK
+                }
+            )
+        except Exception as e:
+            message = str(e)
+            return Response(
+                {
+                    'status': 'error', 
+                    'response_code': 500, 
+                    "message": "Unable to delete."
+                }
+            )
+
+
 class FileUpload(generics.CreateAPIView):
-    queryset = FileManager.objects
+    queryset = FileManager.objects.all()
     serializer_class = FileManagerSerializer
     permission_classes = [AllowAny]
 
@@ -78,8 +101,7 @@ class FileUpload(generics.CreateAPIView):
                     "message": "Upload Not Completed."
                 }
             )
-
-
+            
 class ServicesRequestsCreate(APIView):
     permission_classes = [IsAuthenticated]
     def post(self, request, *args, **kwargs):
