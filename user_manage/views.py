@@ -392,9 +392,9 @@ class EmployeeDocumentUpload(APIView):
                 company = self.request.query_params.get('company',None)
                 if emp_obj:
                     if company:
-                        emp_obj = emp_obj.filter(company__id__in=list(ManagerCompany.objects.filter(manager=user_obj,company__id=company).all())).first()
+                        emp_obj = emp_obj.filter(company__id__in=list(ManagerCompany.objects.filter(manager=user_obj,company__id=company).values_list('company',flat=True).all())).first()
                     else:
-                        emp_obj = emp_obj.filter(company__id__in=list(ManagerCompany.objects.filter(manager=user_obj).all())).first()
+                        emp_obj = emp_obj.filter(company__id__in=list(ManagerCompany.objects.filter(manager=user_obj).values_list('company',flat=True).all())).first()
 
                     if emp_obj:
                         documents_list = emp_obj.documents
