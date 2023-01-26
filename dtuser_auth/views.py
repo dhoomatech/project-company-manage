@@ -21,9 +21,9 @@ def sms_twilio_send():
         client = Client(settings.TWILIO_ACCOUNT_SID, settings.TWILIO_AUTH_TOKEN)
         # client = Client(account_sid, auth_token)
         message = client.messages.create(
-            body='Hi Gassali how are you. Can we make a video call now?..',
+            body='Hi vishnu',
             from_='+13855263363',
-            to='+919895651256'
+            to='+919633752456'
             # to='+918943788706'
         )
         print(message.sid)
