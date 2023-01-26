@@ -58,6 +58,7 @@ class CompanySerializer(serializers.ModelSerializer):
 
 class EmployeeDetailsSerializer(serializers.ModelSerializer):
     documents = serializers.SerializerMethodField('get_documents')
+    company_name = serializers.SerializerMethodField('_get_company_name')
     class Meta:
         model = EmployeeDetails
         fields = "__all__"
@@ -67,3 +68,10 @@ class EmployeeDetailsSerializer(serializers.ModelSerializer):
             return generate_urls(get_files_info_bulk(obj.documents))
         else:
             return []
+    
+    def _get_company_name(self, obj):
+        company_obj = ManagerCompany.objects.filter(company=obj.company).first()
+        if company_obj:
+            return company_obj.company_name
+        else:
+            return ""
