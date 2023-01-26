@@ -17,7 +17,8 @@ class FileManager(models.Model):
     file_name = models.CharField(max_length=250, blank=False, null=True)
     upload = models.FileField(upload_to ='file_manager')
     is_active = models.BooleanField(default=True)
-    expiry_date = models.DateField(blank=True, null=True)
+    # expiry_date = models.DateField(blank=True, null=True)
+    expiry_date = models.IntegerField(default=0,max_length=150)
     
 
 class ManagerServices(models.Model):

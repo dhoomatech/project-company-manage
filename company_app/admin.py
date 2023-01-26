@@ -8,7 +8,7 @@ from django.apps import apps
 #     admin.site.register(model)
 
 class FileManagerAdmin(admin.ModelAdmin):
-    list_display = ['id','folder_name' ,'is_active','upload','expiry_date']
+    list_display = ['id','folder_name' ,'is_active','upload']
     search_fields = ['folder_name']
     list_filter = ['folder_name']
 

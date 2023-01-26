@@ -7,6 +7,7 @@ from django.core.mail import send_mail as sm
 from rest_framework.permissions import AllowAny,IsAuthenticated
 from rest_framework import generics
 from django.conf import settings
+from datetime import date
 
 from .models import FileManager,ServicesRequests
 from .serializers import *
@@ -324,8 +325,15 @@ class FileUpdate(APIView):
             if 'file_name' in post_data and post_data['file_name']:
                 file_obj.file_name = post_data['file_name']
             
-            if 'expiry_date' in post_data and post_data['expiry_date']:
-                file_obj.expiry_date = post_data['expiry_date']
+            if 'number_days' in post_data and post_data['number_days']:
+                from datetime import datetime,timedelta
+
+                number_days = int(post_data['number_days'])
+                today = datetime.now()
+                end_date = today + timedelta(days=number_days)
+
+                ts = datetime.timestamp(end_date)
+                file_obj.expiry_date = ts
 
             file_obj.save()
 
@@ -337,7 +345,7 @@ class FileUpdate(APIView):
                 }
             )
         except Exception as e:
-            message = str(e)
+            traceback.print_exc()
             return Response(
                 {
                     'status': 'error', 
