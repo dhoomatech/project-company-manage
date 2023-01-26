@@ -189,6 +189,7 @@ class CreateCompanyAccount(APIView):
             company_obj.phone_number = post_data['phone']
             company_obj.is_manager = False
             company_obj.is_company = True
+            company_obj.is_active = True
             company_obj.save()
 
             mapper = ManagerCompany()
