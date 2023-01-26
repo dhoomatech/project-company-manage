@@ -376,6 +376,7 @@ class EmployeeDocumentUpload(APIView):
     permission_classes = [IsAuthenticated]
     def get(self, request,emp_id, *args, **kwargs):
         try:
+            documents_list = []
             result_dict = {}
             user_obj = request.user
             emp_obj = EmployeeDetails.objects.filter(id=emp_id,is_active=True,is_delete=False)
