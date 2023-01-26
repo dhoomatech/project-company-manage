@@ -312,3 +312,36 @@ class PrivacyPolicy(View):
     def get(self, request, *args, **kwargs):
         
         return render(request, self.template_name,{})
+
+
+class FileUpdate(APIView):
+    permission_classes = [IsAuthenticated]
+    def post(self, request,file_id, **kwargs):
+        try:
+            post_data = request.data
+            file_obj = FileManager.objects.filter(id=file_id).first()
+            
+            if 'file_name' in post_data and post_data['file_name']:
+                file_obj.file_name = post_data['file_name']
+            
+            if 'expiry_date' in post_data and post_data['expiry_date']:
+                file_obj.expiry_date = post_data['expiry_date']
+
+            file_obj.save()
+
+            return Response(
+                {
+                    'status': 'success',
+                    'message': 'file update successfullly.',
+                    'response_code': status.HTTP_200_OK
+                }
+            )
+        except Exception as e:
+            message = str(e)
+            return Response(
+                {
+                    'status': 'error', 
+                    'response_code': 500, 
+                    "message": "Unable to update."
+                }
+            )

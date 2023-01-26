@@ -45,7 +45,7 @@ def image_url_mapping(data_list):
 
 def get_files_dict(file_ids):
     try:
-        files_urls = FileManager.objects.filter(id__in=file_ids).values('upload','id','user_code','folder_name','is_active','expiry_date').order_by('folder_name').all()
+        files_urls = FileManager.objects.filter(id__in=file_ids).values('upload','id','user_code','folder_name','is_active','expiry_date','file_name').order_by('folder_name').all()
         for file_obj in files_urls:
             file_obj['upload'] = settings.MEDIA_URL + file_obj["upload"]
         return files_urls
@@ -56,7 +56,7 @@ def get_files_dict(file_ids):
 
 def get_files_folder_dict(file_ids):
     try:
-        files_urls = FileManager.objects.filter(id__in=file_ids).values('upload','id','user_code','folder_name','is_active','expiry_date').order_by('folder_name').all()
+        files_urls = FileManager.objects.filter(id__in=file_ids).values('upload','id','user_code','folder_name','is_active','expiry_date','file_name').order_by('folder_name').all()
         folder_structure = {}
         for file_obj in files_urls:
             file_obj['upload'] = settings.MEDIA_URL + file_obj["upload"]
@@ -72,7 +72,7 @@ def get_files_folder_dict(file_ids):
 
 def get_files_folder_dict_list(file_ids):
     try:
-        files_urls = FileManager.objects.filter(id__in=file_ids).values('upload','id','user_code','folder_name','is_active','expiry_date').order_by('folder_name').all()
+        files_urls = FileManager.objects.filter(id__in=file_ids).values('upload','id','user_code','folder_name','is_active','expiry_date','file_name').order_by('folder_name').all()
         folder_structure_list = []
         folder_structure = {}
         for file_obj in files_urls:
