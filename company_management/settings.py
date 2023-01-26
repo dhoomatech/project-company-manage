@@ -87,7 +87,9 @@ MIDDLEWARE = [
 
 CSRF_TRUSTED_ORIGINS = [
     "http://127.0.0.1:8000",
-    "http://15.207.233.212:8001"
+    "http://15.207.233.212:8001",
+    "http://api-uat.letstalkuae.com",
+    "https://api-uat.letstalkuae.com",
 ]
 CSRF_COOKIE_SECURE = True
 CSRF_COOKIE_HTTPONLY = True
