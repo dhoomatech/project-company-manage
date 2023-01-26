@@ -425,6 +425,7 @@ class EmployeeDocumentUpload(APIView):
                 return Response({"status":200,"message":"Document updated."})
             
             if emp_obj and user_obj.is_manager:
+                emp_obj = emp_obj.first()
                 folder_name = request_post['folder_name'] if 'folder_name' in request_post else "default"
                 new_documents_list = get_files_id_check(request_post['document'])
                 folder_files_name_update(request_post['document'],folder_name)
@@ -435,8 +436,8 @@ class EmployeeDocumentUpload(APIView):
                 return Response({"status":200,"message":"Document updated."})      
             
             return Response({"status":status.HTTP_400_BAD_REQUEST,"message":"Not a valid employee id."})
-        except:
-            return Response({"status":status.HTTP_400_BAD_REQUEST,"message":"Please try again latter."})
+        except Exception as e:
+            return Response({"status":status.HTTP_400_BAD_REQUEST,"message":"Please try again latter." + str(e)})
 
 
 class CompanyDocuments(APIView):
