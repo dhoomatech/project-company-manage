@@ -44,9 +44,6 @@ class ServicesRequests(models.Model):
     manager_service = models.ForeignKey(ManagerServices, on_delete=models.CASCADE, related_name='approval_user',blank=True,null=True)
 
 
-
-
-
 class Notifications(models.Model):
     tittle = models.CharField(max_length=250, blank=False, null=True)
     discription = models.TextField(blank=False, null=True)
