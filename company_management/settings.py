@@ -84,15 +84,15 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
-
-CSRF_TRUSTED_ORIGINS = [
-    "http://127.0.0.1:8000",
-    "http://15.207.233.212:8001",
-    "http://api-uat.letstalkuae.com",
-    "https://api-uat.letstalkuae.com",
-]
-CSRF_COOKIE_SECURE = True
-CSRF_COOKIE_HTTPONLY = True
+CSRF_TRUSTED_ORIGINS = ["*"]
+# CSRF_TRUSTED_ORIGINS = [
+#     "http://127.0.0.1:8000",
+#     "http://15.207.233.212:8001",
+#     "http://api-uat.letstalkuae.com",
+#     "https://api-uat.letstalkuae.com",
+# ]
+# CSRF_COOKIE_SECURE = True
+# CSRF_COOKIE_HTTPONLY = True
 
 ROOT_URLCONF = 'company_management.urls'
 AUTH_USER_MODEL = 'user_manage.LoginUser'
