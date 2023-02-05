@@ -47,9 +47,10 @@ class AccountLogin(APIView):
             if user_obj and user_obj.is_active == False or user_obj and user_obj.is_manager == False and user_obj.is_company == False:
                 return Response({"status":"400","message":"You are not a active user."})
             
+            otp_mail = user_obj.email
             if "otp" in post_data:
                 auth_check = UserAuthKey()
-                if auth_check.validate_key(user_name,post_data['otp']):
+                if auth_check.validate_key(otp_mail,post_data['otp']):
                     token, _ = Token.objects.get_or_create(user=user_obj)
                     extra_values = {}
                     if user_obj.is_company:
@@ -90,7 +91,7 @@ class AccountLogin(APIView):
                 
             else:
                 auth_key = UserAuthKey()
-                auth_key.generate_token(user_name)
+                auth_key.generate_token(otp_mail)
                 return Response({"status":status.HTTP_201_CREATED,"message":"OTP send succcessfully.","data":auth_key.code})
             
             

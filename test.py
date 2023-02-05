@@ -5,9 +5,13 @@ import django
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "company_management.settings")
 django.setup()
 
-from dtuser_auth.views import sms_twilio_send
 
-sms_twilio_send()
+
+from dtuser_auth.views import sms_twilio_send,email_send
+
+email_send("nishadk@dhoomatech.com","23456")
+
+# sms_twilio_send()
 
 # from user_manage.models import LoginUser
 

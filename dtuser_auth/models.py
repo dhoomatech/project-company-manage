@@ -22,14 +22,13 @@ class UserAuthKey(models.Model):
 		self.date = datetime.datetime.now() + datetime.timedelta(minutes=10)
 		self.save()
 		try:
-			account_sid = settings.TWILIO_ACCOUNT_SID
-			auth_token = settings.TWILIO_AUTH_TOKEN
-			client = Client(account_sid, auth_token)
-			message = client.messages.create(
-				body=f'Hi user, Your otp is {self.code}',
-				from_=settings.TWILIO_NUMBER,
-				to=user_name
-			)
+			subject = 'Login Verification Code.'
+			message = f'Dear {user_name},\n We received a request to log in to your account. To complete the login process, please enter the following code on the website:OTP: {self.code}'
+
+			email_from = settings.EMAIL_HOST_USER
+			recipient_list = [email,]    
+			send_mail( subject, message, email_from, recipient_list )
+
 		except:
 			pass
 	

@@ -2,6 +2,7 @@ from django.shortcuts import render
 
 from django.conf import settings
 import traceback
+from django.core.mail import send_mail
 # Create your views here.
 
 # TWILIO_ACCOUNT_SID = 'AC48fe8f20b2328ba4076368794fe7c766'
@@ -36,4 +37,10 @@ def sms_twilio_send():
 
 
 
-    
+def email_send(email,otp,name = "user"):
+    subject = 'Login Verification Code.'
+    message = f'Dear {name},\n We received a request to log in to your account. To complete the login process, please enter the following code on the website:OTP: {otp}'
+
+    email_from = settings.EMAIL_HOST_USER
+    recipient_list = [email,]    
+    send_mail( subject, message, email_from, recipient_list )
