@@ -9,7 +9,7 @@ django.setup()
 
 from dtuser_auth.views import sms_twilio_send,email_send
 
-email_send("nishadk@dhoomatech.com","23456")
+email_send("nishadgolapakrishnan0@dhoomatech.com","23456")
 
 # sms_twilio_send()
 
