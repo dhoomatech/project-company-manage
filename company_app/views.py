@@ -325,10 +325,10 @@ class FileUpdate(APIView):
             if 'file_name' in post_data and post_data['file_name']:
                 file_obj.file_name = post_data['file_name']
             
-            if 'number_days' in post_data and post_data['number_days']:
+            if 'expiry_date' in post_data and post_data['expiry_date']:
                 from datetime import datetime,timedelta
 
-                number_days = int(post_data['number_days'])
+                number_days = int(post_data['expiry_date'])
                 today = datetime.now()
                 end_date = today + timedelta(days=number_days)
 
@@ -345,7 +345,7 @@ class FileUpdate(APIView):
                 }
             )
         except Exception as e:
-            traceback.print_exc()
+            # traceback.print_exc()
             return Response(
                 {
                     'status': 'error', 
