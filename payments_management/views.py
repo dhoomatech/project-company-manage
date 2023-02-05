@@ -11,6 +11,7 @@ from django.http import JsonResponse
 
 from user_manage.models import LoginUser
 from datetime import date, timedelta
+from django.conf import settings
 
 # import razorpay
 
@@ -132,6 +133,7 @@ class PaymentProcess(View):
             "package_name":"No Package",
             "amount_per_unit":"AED0",
             "total_amount":"AED0",
+            "payment_key":settings.PAYMENT_KEY,
         }
 
         if package_id:

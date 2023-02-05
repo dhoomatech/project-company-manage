@@ -15,4 +15,16 @@ ct = datetime.datetime.now()
 # ts store timestamp of current time
 ts = ct.timestamp()
 
-FileManager.objects.filter(expiry_date__lte=ts).update(is_active=False)
+import schedule
+import time
+
+def file_expire_job():
+    FileManager.objects.filter(expiry_date__lte=ts).update(is_active=False)
+
+schedule.every(10).minutes.do(file_expire_job)
+schedule.every().hour.do(file_expire_job)
+schedule.every().day.at("12:00").do(file_expire_job)
+
+while 1:
+    schedule.run_pending()
+    time.sleep(1)

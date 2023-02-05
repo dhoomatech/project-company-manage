@@ -67,6 +67,8 @@ class AccountLogin(APIView):
                             'first_name':manager.first_name,
                             'last_name':manager.last_name,
                             'phone_number':str(manager.phone_number),
+                            'email':manager.email,
+                            'profile_pic': get_files_info(manager.picture),
                         }})
                     elif user_obj.is_manager:
                         manager_count = ManagerCompany.objects.filter(manager=user_obj).count()

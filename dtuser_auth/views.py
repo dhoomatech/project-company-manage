@@ -44,3 +44,12 @@ def email_send(email,otp,name = "user"):
     email_from = settings.EMAIL_HOST_USER
     recipient_list = [email,]    
     send_mail( subject, message, email_from, recipient_list )
+
+
+def email_notify_send(email_list,tittle,text):
+    subject = tittle + ' Expiration Reminder.'
+    message = f'Dear valued customer! ,\n {text}'
+
+    email_from = settings.EMAIL_HOST_USER
+    recipient_list = email_list
+    send_mail( subject, message, email_from, recipient_list )

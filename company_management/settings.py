@@ -318,3 +318,7 @@ ADMIN_STYLE = {
     'logo-width': 'auto',
     'logo-height': '35px'
 }
+
+PAYMENT_KEY = "pk_test_Vlk842B1EA7tDN5QbrfGjYzh"
+
+EXPIRE_DATE_REMINDER = 10
