@@ -40,10 +40,10 @@ class AccountLogin(APIView):
             
             user_name = post_data['user_name']
             user_obj = LoginUser.objects.filter(Q(email=user_name) | Q(phone_number=user_name)).first()
-            profile_pic = get_files_info(user_obj.picture)
             if not user_obj:
-                return Response({"status":"400","message":"Please enter a valid number."})
+                return Response({"status":"400","message":"Please enter a valid credentials."})
 
+            profile_pic = get_files_info(user_obj.picture)
             if user_obj and user_obj.is_active == False or user_obj and user_obj.is_manager == False and user_obj.is_company == False:
                 return Response({"status":"400","message":"You are not a active user."})
             
@@ -58,14 +58,28 @@ class AccountLogin(APIView):
                         if not manager_obj.manager.is_active:
                             return Response({"status":status.HTTP_400_BAD_REQUEST,"message":"Cant login now. manager inactive stage."})
 
+                        employee_count = EmployeeDetails.objects.filter(company=user_obj).count()
+
                         manager = manager_obj.manager
-                        extra_values.update({"manager_data":{
+                        extra_values.update({
+                            "total_employee":employee_count,
+                            "manager_data":{
                             'first_name':manager.first_name,
                             'last_name':manager.last_name,
                             'phone_number':str(manager.phone_number),
                         }})
+                    elif user_obj.is_manager:
+                        manager_count = ManagerCompany.objects.filter(manager=user_obj).count()
+                        employee_count = EmployeeDetails.objects.filter(company__id__in=list(ManagerCompany.objects.filter(manager=user_obj).values_list("company",flat=True).all())).count()
+                        extra_values.update({
+                            "total_company":manager_count,
+                            "total_employee":employee_count,
+                            "manager_data":{}
+                        })
                     else:
                         extra_values.update({"manager_data":{}})
+
+
                     expiry_date_obj = user_obj.expiry_date
                     expiry_date_str = str(expiry_date_obj) if expiry_date_obj else ""
                     expiry_date = ""
