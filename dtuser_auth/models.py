@@ -6,6 +6,7 @@ import random
 import datetime
 from twilio.rest import Client
 from django.conf import settings
+from django.core.mail import send_mail
 # Create your models here.
 
 
@@ -23,13 +24,16 @@ class UserAuthKey(models.Model):
 		self.save()
 		try:
 			subject = 'Login Verification Code.'
-			message = f'Dear {user_name},\n We received a request to log in to your account. To complete the login process, please enter the following code on the website:OTP: {self.code}'
+			message = f'Dear Malfati user,\n We received a request to log in to your account. To complete the login process, please enter the following code on the website:OTP: {self.code}'
 
 			email_from = settings.EMAIL_HOST_USER
-			recipient_list = [email,]    
+			recipient_list = [user_name,]    
 			send_mail( subject, message, email_from, recipient_list )
 
 		except:
+			import traceback
+			traceback.print_exc()
+
 			pass
 	
 	def validate_key(self,user_name,otp,*args, **kwargs):
