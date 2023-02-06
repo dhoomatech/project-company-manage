@@ -26,8 +26,8 @@ def account_expire_job():
     today = datetime.now()
     end_date = today + timedelta(days=number_days)
 
-    ts = datetime.timestamp(end_date)
-    
+    emial_list = list(LoginUser.objects.filter(expiry_date__lt=datetime.date(end_date.year, end_date.month, end_date.day),is_active=True).values_list("email",flat=True).all())
+
 
 schedule.every(10).minutes.do(account_expire_job)
 schedule.every().hour.do(account_expire_job)

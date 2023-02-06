@@ -73,7 +73,7 @@ class LoginUser(AbstractBaseUser,PermissionsMixin):
     last_name = models.CharField(max_length=255, null=False,default='')
     country_code = models.CharField(max_length=5, null=True,default='')
     is_staff = models.BooleanField(default=False,null=True)
-    is_active = models.BooleanField(default=False)
+    is_active = models.BooleanField(default=True)
     is_admin = models.BooleanField(default=False)
     is_superuser = models.BooleanField(default=False)
     is_company = models.BooleanField(default=False)
