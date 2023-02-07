@@ -515,7 +515,18 @@ class UpdateDataProfile(APIView):
             profile_image_id = user_values['picture'] if 'picture' in user_values and user_values['picture'] else ""
             user_values["profile_pic"] = get_files_info(profile_image_id)
             user_values["phone_number"] = str(user_values["phone_number"])
-            return Response({"status":200,"message":"Account updated.","data":dict(user_values)})
+            
+            extra_dict = {}
+            if user_values['is_company']:
+                extra_dict["employee_count"] = EmployeeDetails.objects.filter(company=user_obj).count()
+            elif user_values['is_manager']:
+                extra_dict["manager_count"] = ManagerCompany.objects.filter(manager=user_obj).count()
+                extra_dict["employee_count"] = EmployeeDetails.objects.filter(company__id__in=list(ManagerCompany.objects.filter(manager=user_obj).values_list("company",flat=True).all())).count()
+            
+            res_dic = dict(user_values)
+            res_dic.update(extra_dict)
+
+            return Response({"status":200,"message":"Account updated.","data":res_dic})
         except:
             return Response({"status":status.HTTP_400_BAD_REQUEST,"message":"Please try again latter."})
 
