@@ -7,9 +7,15 @@ django.setup()
 
 
 
-from dtuser_auth.views import sms_twilio_send,email_send
+from dtuser_auth.views import sms_twilio_send,email_send,welcome_mail,request_mail,request_approve_mail
 
-email_send("nishadgolapakrishnan0@dhoomatech.com","23456")
+to_mail = "vishnu@dhoomatech.com"
+# welcome_mail()
+
+request_mail(to_mail,"nishadk@dhoomatech.com")
+request_approve_mail(to_mail)
+
+# email_send("nishadgolapakrishnan0@dhoomatech.com","23456")
 
 # sms_twilio_send()
 

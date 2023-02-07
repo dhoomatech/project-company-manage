@@ -135,6 +135,9 @@ class ServicesRequestsCreate(APIView):
                 
                 service_obj.save()
 
+                from dtuser_auth.views import request_mail
+                request_mail(report_user.email,user_obj.email)
+                
                 return Response({
                     'status':"success",
                     'message': 'Request created successfull.',
@@ -249,11 +252,16 @@ class ServicesRequestsApproval(APIView):
             if service_request:
                 service_request.status = status
                 service_request.save()
+                
+                request_user = service_request.request_user
+                from dtuser_auth.views import request_mail
+                request_mail(request_user.email)
+
                 return Response({"status":200,"message":"Status updated successfully."})
 
             return Response({"status":400,"message":"Unautherized entry."})
         except Exception as e:
-            # traceback.print_exc()
+
             message = str(e)     
             return Response({'status':'error','response_code':500,"message":message})
 

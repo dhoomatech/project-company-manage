@@ -53,3 +53,42 @@ def email_notify_send(email_list,tittle,text):
     email_from = settings.EMAIL_HOST_USER
     recipient_list = email_list
     send_mail( subject, message, email_from, recipient_list )
+
+def welcome_mail(to_mail):
+
+    from django.core.mail import EmailMultiAlternatives
+    email_from = settings.EMAIL_HOST_USER
+    subject, from_email, to = 'Welcome mail.', email_from, to_mail
+
+    text_content = 'Welcome to Malfati.'
+    html_content = "<h1>Hi Welcome to Malfati !!</h1><p>We're so happy you're here! The concept is simple. Malfati helps you get organized and get more done with your business.</p><p>Thanks,<br>The Malfati Team</p>"
+    msg = EmailMultiAlternatives(subject, text_content, from_email, [to])
+    msg.attach_alternative(html_content, "text/html")
+    msg.send()
+
+
+def request_mail(to_mail,user_mail):
+
+    from django.core.mail import EmailMultiAlternatives
+    email_from = settings.EMAIL_HOST_USER
+    subject, from_email, to = 'Service request.', email_from, to_mail
+
+    text_content = 'Ownerd PRO,'
+    html_content = f"<h3>Hi PRO </h3><p>New service requested by {user_mail}. please check your application.</p><p>Thanks,<br>The Malfati Team</p>"
+    msg = EmailMultiAlternatives(subject, text_content, from_email, [to])
+    msg.attach_alternative(html_content, "text/html")
+    msg.send()
+
+
+def request_approve_mail(to_mail):
+
+    from django.core.mail import EmailMultiAlternatives
+    email_from = settings.EMAIL_HOST_USER
+    subject, from_email, to = 'Service request approval.', email_from, to_mail
+
+    text_content = 'Hi Company.'
+    html_content = "<h3>Hi Company</h3><p>Your requst was approved.</p><p>Thanks,<br>The Malfati Team</p>"
+    msg = EmailMultiAlternatives(subject, text_content, from_email, [to])
+    msg.attach_alternative(html_content, "text/html")
+    msg.send()
+

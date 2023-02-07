@@ -170,6 +170,10 @@ class CreateManagerAccount(APIView):
             user_obj.password = post_data['phone']
             user_obj.is_manager = True
             user_obj.save()
+            
+            from dtuser_auth.views import welcome_mail
+            welcome_mail(post_data['email'])
+            
             return Response({"status":200,"message":"Manager Create Successfull."})
             
         except Exception as e:
