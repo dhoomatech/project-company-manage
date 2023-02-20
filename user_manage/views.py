@@ -306,6 +306,9 @@ class CreateEmployee(APIView):
             if 'company_id' in post_data and post_data['company_id']:
             	user_obj = LoginUser.objects.filter(id=post_data['company_id']).first()
 
+            if not user_obj:
+            	return Response({"status":400,"message":"Not a valid company details."})
+
             company_obj = EmployeeDetails()
             company_obj.company = user_obj
             company_obj.code = post_data['code']
