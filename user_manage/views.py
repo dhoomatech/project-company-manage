@@ -300,9 +300,12 @@ class CreateEmployee(APIView):
 
             post_data = request.data
             user_obj = request.user
-            if not request.user.is_company:
+            if not request.user.is_company and 'compnay_id' not in post_data:
                 return Response({"status":400,"message":"You cant create employees."})
             
+            if 'compnay_id' in post_data and post_data['compnay_id']:
+            	user_obj = LoginUser.objects.filter(id=post_data['compnay_id']).first()
+
             company_obj = EmployeeDetails()
             company_obj.company = user_obj
             company_obj.code = post_data['code']
