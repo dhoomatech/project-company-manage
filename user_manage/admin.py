@@ -26,3 +26,9 @@ class LoginUserAdmin(admin.ModelAdmin):
     actions = [make_approved,make_inactive]
 
 admin.site.register(LoginUser, LoginUserAdmin)
+
+
+class EmployeeDetailsAdmin(admin.ModelAdmin):
+    list_display = ['id','company' ,'f_name','l_name']
+
+admin.site.register(EmployeeDetails, EmployeeDetailsAdmin)
