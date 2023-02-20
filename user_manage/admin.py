@@ -21,7 +21,7 @@ def make_inactive(modeladmin, request, queryset):
     queryset.update(is_active='f')
 
 class LoginUserAdmin(admin.ModelAdmin):
-    list_display = ['id','phone_number' ,'first_name','last_name','created','is_manager','is_company','is_active']
+    list_display = ['id','phone_number' ,'first_name','last_name','created','is_manager','is_company','is_active','email','is_deleted']
     ordering = ['id']
     actions = [make_approved,make_inactive]
 

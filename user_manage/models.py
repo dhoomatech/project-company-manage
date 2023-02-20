@@ -78,6 +78,7 @@ class LoginUser(AbstractBaseUser,PermissionsMixin):
     is_superuser = models.BooleanField(default=False)
     is_company = models.BooleanField(default=False)
     is_manager = models.BooleanField(default=False)
+    is_deleted = models.BooleanField(default=False)
     phone_code = models.CharField(max_length=4, blank=True,null=True)
     phone_number = PhoneField(blank=False, unique=True)
     created = models.DateTimeField(default=timezone.now)

@@ -39,7 +39,8 @@ class AccountLogin(APIView):
                 return Response({"status":status.HTTP_400_BAD_REQUEST,"message":"User name key missing."})
             
             user_name = post_data['user_name']
-            user_obj = LoginUser.objects.filter(Q(email=user_name) | Q(phone_number=user_name)).first()
+            user_obj = LoginUser.objects.filter(is_deleted=False)
+            user_obj = user_obj.filter(Q(email=user_name) | Q(phone_number=user_name)).first()
             if not user_obj:
                 return Response({"status":"400","message":"Please enter a valid credentials."})
 
