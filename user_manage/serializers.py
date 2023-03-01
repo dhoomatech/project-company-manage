@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from .models import *
 from company_app.models import ServicesRequests
-from company_app.functions import get_files_info_bulk,generate_urls
+from company_app.functions import get_files_info_bulk,generate_urls,get_files_info
 
 class LoginUserSerializer(serializers.ModelSerializer):
     class Meta:
@@ -59,6 +59,7 @@ class CompanySerializer(serializers.ModelSerializer):
 class EmployeeDetailsSerializer(serializers.ModelSerializer):
     documents = serializers.SerializerMethodField('get_documents')
     company_name = serializers.SerializerMethodField('_get_company_name')
+    profile = serializers.SerializerMethodField('_get_pic')
     class Meta:
         model = EmployeeDetails
         fields = "__all__"
@@ -73,5 +74,11 @@ class EmployeeDetailsSerializer(serializers.ModelSerializer):
         company_obj = ManagerCompany.objects.filter(company=obj.company).first()
         if company_obj:
             return company_obj.company_name
+        else:
+            return ""
+    
+    def _get_pic(self, obj):
+        if obj.picture:
+            return get_files_info(obj.picture)
         else:
             return ""
