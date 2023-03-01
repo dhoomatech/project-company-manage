@@ -117,3 +117,4 @@ class EmployeeDetails(models.Model):
     description = models.CharField(max_length=255, null=False,default='')
     modified = models.DateTimeField(default=timezone.now)
     documents = models.JSONField(default=dict,blank=True)
+    picture = models.CharField(max_length=50, blank=True,null=True)
