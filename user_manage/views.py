@@ -243,6 +243,37 @@ class CreateCompanyAccount(APIView):
         except:
             traceback.print_exc()
             return Response({"status":status.HTTP_400_BAD_REQUEST,"message":"Please try again latter."})
+        
+
+class UpdateCompanyAccount(APIView):
+    permission_classes = [IsAuthenticated]
+    def post(self, request, *args, **kwargs):
+        try:
+
+            post_data = request.data
+            user_obj = request.user
+            if not user_obj and not user_obj.is_manager:
+                return Response({"status":400,"message":"Not a valid manager."})
+
+            if "company_id" not in post_data:
+                return Response({"status":400,"message":"Please mesion the company id."})
+
+            company_obj = LoginUser.objects.filter(id=post_data['company_id']).first()
+            if not company_obj:
+                return Response({"status":400,"message":"Company id is not valid."})
+            
+            company_obj.first_name = post_data['name'] if 'name' in post_data else company_obj.first_name
+            company_obj.last_name = post_data['company_name'] if 'company_name' in post_data else company_obj.last_name
+            company_obj.email = post_data['email'] if 'email' in post_data else company_obj.email
+            company_obj.phone_number = post_data['phone'] if 'phone' in post_data else company_obj.phone_number
+            company_obj.is_active = post_data['status'] if 'status' in post_data else company_obj.is_active
+            company_obj.save()
+
+            return Response({"status":200,"message":"Account Updated."})
+        except:
+            # traceback.print_exc()
+            return Response({"status":status.HTTP_400_BAD_REQUEST,"message":"Please try again latter."})
+    
 
 class AdminCompanyList(generics.ListCreateAPIView):
     queryset = LoginUser.objects.all()
@@ -346,6 +377,35 @@ class CreateEmployee(APIView):
         except:
             traceback.print_exc()
             return Response({"status":status.HTTP_400_BAD_REQUEST,"message":"Please try again latter."})
+
+class UpdateEmployee(APIView):
+    permission_classes = [IsAuthenticated]
+    def post(self, request, *args, **kwargs):
+        try:
+
+            post_data = request.data
+            user_obj = request.user
+            if 'employee_id' not in post_data:
+                return Response({"status":400,"message":"You cant update employees."})
+            
+            company_obj = EmployeeDetails.objects.filter(id=post_data['employee_id']).first()
+            
+            if not company_obj:
+                return Response({"status":400,"message":"Not a valid employee updates."})
+
+
+            company_obj.f_name = post_data['f_name'] if 'f_name' in post_data else company_obj.f_name
+            company_obj.l_name = post_data['l_name'] if 'l_name' in post_data else company_obj.l_name
+            company_obj.description = post_data['description'] if 'description' in post_data else company_obj.description
+            company_obj.documents = post_data['documents'] if "documents" in post_data else company_obj.documents
+            company_obj.picture = post_data['picture'] if 'picture' in post_data else company_obj.picture
+            company_obj.save()
+
+            return Response({"status":200,"message":"Account Updated."})
+        except:
+            traceback.print_exc()
+            return Response({"status":status.HTTP_400_BAD_REQUEST,"message":"Please try again latter."})
+    
 
 class EmployeeList(generics.ListCreateAPIView):
     queryset = EmployeeDetails.objects.all()

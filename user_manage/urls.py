@@ -7,6 +7,7 @@ urlpatterns = [
     path('admin-account-login', AdminAccountLogin.as_view()),
     path('create-manager', CreateManagerAccount.as_view()),
     path('create-company', CreateCompanyAccount.as_view()),
+    path('update-company', UpdateCompanyAccount.as_view()),
 
     path('admin-company-list', AdminCompanyList.as_view()),
     path('admin-manager-list', AdminManagerList.as_view()),
@@ -15,6 +16,7 @@ urlpatterns = [
 
     path('employee-list', EmployeeList.as_view()),
     path('employee-create', CreateEmployee.as_view()),
+    path('employee-update', UpdateEmployee.as_view()),
 
     path('company-manager-documents', AccountDocumentUpload.as_view()),
 
