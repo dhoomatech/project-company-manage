@@ -319,6 +319,6 @@ ADMIN_STYLE = {
     'logo-height': '35px'
 }
 
-PAYMENT_KEY = "pk_test_Vlk842B1EA7tDN5QbrfGjYzh"
+PAYMENT_KEY = "pk_live_oczOKgFTrjbEMA01nuXHC8N7"
 
 EXPIRE_DATE_REMINDER = 10
