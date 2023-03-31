@@ -113,7 +113,7 @@ class MembershipPackageAdminUpdate(generics.RetrieveUpdateAPIView):
 class PaymentProcess(View):
     template_name = 'payments_management/payment_process.html'
     def get(self, request, *args, **kwargs):
-        package_id = self.request.GET.get('package_id')
+        package_id = self.request.GET.get('package_id',None)
         first_name = self.request.GET.get('first_name')
         middle_name = self.request.GET.get('middle_name')
         last_name = self.request.GET.get('last_name')
