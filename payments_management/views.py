@@ -152,6 +152,8 @@ class PaymentProcess(View):
                         return JsonResponse({"status":200,"message":"Free subscription added."})
                     else:
                         return JsonResponse({"status":400,"message":"Not a valid user."})
+            else:
+                return JsonResponse({"status":400,"message":"Package not found."})
             
         elif amount:
             amount_value = float(amount)
@@ -207,13 +209,15 @@ class PaymentSucess(APIView):
             return Response({"status":status.HTTP_400_BAD_REQUEST,"message":"Please try again latter."})
 
 class PaymentTokenUpdate(APIView):
+    permission_classes = [AllowAny]
     def post(self, request, *args, **kwargs):
         try:
-            token = request.data['token']
-            mobile = request.data['mobile']
+            token = request.data['payment_token']
+            mobile = request.data['phone']
             mode = request.data['mode'] if "mode" in request.data else ""
             PaymentTransation.objects.create(phone=mobile,transaction_token=token,paid_mode=mode)
             return Response({"status":200,"message":"Token update successfull."})
         except:
+            traceback.print_exc()
             return Response({"status":status.HTTP_400_BAD_REQUEST,"message":"Please try again latter."})
             
