@@ -198,11 +198,16 @@ class PaymentProcess2(View):
         return JsonResponse({"status":400,"message":"Payment can't process now."})
 
 class PaymentSucess(APIView):
+    permission_classes = [AllowAny]
     def get(self, request, *args, **kwargs):
         try:
-            token = request.data['token']
+            token = self.request.query_params.get('token',None)
+            mode = self.request.query_params.get('mode',None)
+            tap_id = self.request.query_params.get('tap_id',None)
+            
             payment_obj = PaymentTransation.objects.filter(transaction_token=token).first()
             payment_obj.status = "paid"
+            payment_obj.transaction_id = tap_id
             payment_obj.save()
             return Response({"status":200,"message":"Payment success."})
         except:
