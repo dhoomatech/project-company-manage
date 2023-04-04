@@ -143,7 +143,7 @@ class PaymentProcess(View):
                     context.update({"package_name":package_obj.tittle,"package_amount":package_obj.amount,"amount_per_unit":"AED"+str(package_obj.amount),"total_amount":"AED"+str(package_obj.amount)})
                     return render(request, self.template_name,context)
                 else:
-                    user_obj = LoginUser.objects.filter(phone_number=phone_number).first()
+                    user_obj = LoginUser.objects.filter(email=email).first()
                     if user_obj:
                         days_before = date.today() + timedelta(days=package_obj.expire_days)
                         user_obj.expiry_date = days_before
