@@ -117,6 +117,94 @@ class AccountLogin(APIView):
 			traceback.print_exc()
 			return Response({"status":status.HTTP_400_BAD_REQUEST,"message":str(e)})
 
+
+class AccountLoginPassword(APIView):
+	permission_classes = [AllowAny]
+	def post(self, request, *args, **kwargs):
+		try:
+			from django.contrib.auth import authenticate
+			post_data = request.data
+			if "user_phone" not in post_data:
+				return Response({"status":status.HTTP_400_BAD_REQUEST,"message":"user_phone key missing."})
+			
+			if "password" not in post_data:
+				return Response({"status":status.HTTP_400_BAD_REQUEST,"message":"password key missing."})
+			
+			user_name = post_data['user_phone']
+			password = post_data['password']
+
+			user_obj = authenticate(username=user_name, password=password)
+			if not user_obj:
+				return Response({"status":"400","message":"Please enter a valid credentials."})
+
+			profile_pic = get_files_info(user_obj.picture)
+			if user_obj and user_obj.is_active == False or user_obj and user_obj.is_manager == False and user_obj.is_company == False:
+				return Response({"status":"400","message":"You are not a active user."})
+			
+			user_obj.check
+
+			otp_mail = user_obj.email
+
+
+			token, _ = Token.objects.get_or_create(user=user_obj)
+			extra_values = {}
+			if user_obj.is_company:
+				manager_obj = ManagerCompany.objects.filter(company=user_obj).first()
+				if not manager_obj.manager.is_active:
+					return Response({"status":status.HTTP_400_BAD_REQUEST,"message":"Cant login now. manager inactive stage."})
+
+				employee_count = EmployeeDetails.objects.filter(company=user_obj).count()
+
+				manager = manager_obj.manager
+				extra_values.update({
+					"total_employee":employee_count,
+					"manager_data":{
+					'first_name':manager.first_name,
+					'last_name':manager.last_name,
+					'phone_number':str(manager.phone_number),
+					'email':manager.email,
+					'profile_pic': get_files_info(manager.picture),
+				}})
+			elif user_obj.is_manager:
+				manager_count = ManagerCompany.objects.filter(manager=user_obj).count()
+				employee_count = EmployeeDetails.objects.filter(company__id__in=list(ManagerCompany.objects.filter(manager=user_obj).values_list("company",flat=True).all())).count()
+				extra_values.update({
+					"total_company":manager_count,
+					"total_employee":employee_count,
+					"manager_data":{}
+				})
+			else:
+				extra_values.update({"manager_data":{}})
+
+
+			expiry_date_obj = user_obj.expiry_date
+			expiry_date_str = str(expiry_date_obj) if expiry_date_obj else ""
+			expiry_date = ""
+			if expiry_date_obj:
+				expiry_date = expiry_date_obj.strftime("%Y-%m-%d %H:%M:%S")
+			return Response({"status":status.HTTP_201_CREATED,"message":"Login Successfull.","data":{
+				"token":token.key,
+				"first_name":user_obj.first_name,
+				"last_name":user_obj.last_name,
+				"phone_code":str(user_obj.phone_number)[:4],
+				"phone_number":str(user_obj.phone_number),
+				"number":str(user_obj.phone_number)[4:],
+				"email":user_obj.email,
+				"company":user_obj.is_company,
+				"manager":user_obj.is_manager,
+				"active":user_obj.is_active,
+				"expiry_date_value":expiry_date_str,
+				"expiry_date":expiry_date,
+				"profile_pic":profile_pic,
+				**extra_values
+			}})
+				
+			
+			
+		except Exception as e:
+			traceback.print_exc()
+			return Response({"status":status.HTTP_400_BAD_REQUEST,"message":str(e)})
+		
 class AdminAccountLogin(APIView):
 	permission_classes = [AllowAny]
 	def post(self, request, *args, **kwargs):

@@ -4,6 +4,7 @@ from .views import *
 urlpatterns = [
     path('api-token-auth/', CustomAuthToken.as_view()),
     path('account-login', AccountLogin.as_view()),
+    path('account-login-password', AccountLoginPassword.as_view()),
     path('admin-account-login', AdminAccountLogin.as_view()),
     path('create-manager', CreateManagerAccount.as_view()),
     path('create-company', CreateCompanyAccount.as_view()),
