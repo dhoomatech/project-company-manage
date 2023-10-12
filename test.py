@@ -9,11 +9,8 @@ django.setup()
 
 from dtuser_auth.views import sms_twilio_send,email_send,welcome_mail,request_mail,request_approve_mail
 
-to_mail = "vishnu@dhoomatech.com"
-# welcome_mail()
-
-request_mail(to_mail,"nishadk@dhoomatech.com")
-request_approve_mail(to_mail)
+to_mail = "nishad@gmail.com"
+welcome_mail(to_mail)
 
 # email_send("nishadgolapakrishnan0@dhoomatech.com","23456")
 
@@ -21,12 +18,3 @@ request_approve_mail(to_mail)
 
 # from user_manage.models import LoginUser
 
-# user_obj = LoginUser.objects.filter(email="vishnu@dhoomatech.com").first()
-# user_obj.is_staff = True
-# user_obj.phone_number = "+919633752456"
-# user_obj.is_superuser = True
-# user_obj.is_admin = True
-# user_obj.is_active = True
-# user_obj.save()
-# print(user_obj.__dict__)
-# print(str(user_obj.phone_number))
